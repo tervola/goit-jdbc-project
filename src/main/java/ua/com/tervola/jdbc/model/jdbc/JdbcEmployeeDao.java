@@ -16,6 +16,7 @@ public class JdbcEmployeeDao {
         this.dataSource = dataSource;
     }
 
+    @Before
     public void sample(){
         LOGGER.info("into sample");
     }
