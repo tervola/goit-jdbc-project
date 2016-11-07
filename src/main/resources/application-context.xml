@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <!--find Transactions annotations-->
+    <!--<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>-->
+
+    <bean class="ua.com.tervola.jdbc.MainClass" id="mainClass">
+        <property name="employeeController" ref="employeeController"></property>
+    </bean>
 
     <bean id="employeeDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcEmployeeDao">
         <property name="dataSource" ref="dataSource"></property>
@@ -26,4 +34,10 @@
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
       <property name="dataSource" ref="dataSource" />
     </bean>
+
+    <bean  class="ua.com.tervola.jdbc.controller.EmployeeController" id="employeeController">
+        <property name="txManager" ref="txManager"/>
+        <property name="employeeDao" ref="employeeDao"/>
+    </bean>
+
 </beans>
