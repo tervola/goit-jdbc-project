@@ -13,23 +13,33 @@ import ua.com.tervola.jdbc.model.EmployeeDao;
 public class MainClass {
     private EmployeeController employeeController;
     private Logger LOGGER = LogManager.getLogger(MainClass.class);
+
     EmployeeDao employeeDao;
+
+    public void setEmployee(EmployeeDao employeeDao) {
+        this.employeeDao = employeeDao;
+    }
 
     public static void main(String[] args) throws ClassNotFoundException {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
         MainClass main = context.getBean(MainClass.class);
-        main.start();
+        main.startController();
 
     }
 
 
-
     private void start() throws ClassNotFoundException {
-        LOGGER.info("prepared to call to DAO");
-        employeeDao = new EmployeeDao();
+        LOGGER.info("prepared to call to DAO from start");
         employeeDao.findAll().forEach(System.out::println);
         System.out.println("---------");
         System.out.println(employeeDao.findById(1));
+    }
+
+    private void startController() throws ClassNotFoundException {
+        LOGGER.info("prepared to call to DAO from startController" );
+        employeeController.getAllEmployees().forEach(System.out::println);
+        System.out.println("---------");
+        System.out.println(employeeController.find(1));
     }
 
     public void setEmployeeController(EmployeeController employeeController) {

@@ -1,13 +1,9 @@
 package ua.com.tervola.jdbc.controller;
 
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import ua.com.tervola.jdbc.model.Employee;
-import ua.com.tervola.jdbc.model.jdbc.JdbcEmployeeDao;
+import ua.com.tervola.jdbc.model.EmployeeDao;
 
 import java.util.List;
 
@@ -17,39 +13,25 @@ import java.util.List;
 public class EmployeeController {
 
     private PlatformTransactionManager txManager;
-    private JdbcEmployeeDao employeeDao;
+    private EmployeeDao employeeDao;
 
     public void setTxManager(PlatformTransactionManager txManager) {
         this.txManager = txManager;
     }
 
-    public void setEmployeeDao(JdbcEmployeeDao employeeDao) {
+    public void setEmployeeDao(EmployeeDao employeeDao) {
         this.employeeDao = employeeDao;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+//    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public List<Employee> getAllEmployees(){
-
-        //если уже есть транзакция вернет текущую
-        final int propagationRequired = TransactionDefinition.PROPAGATION_REQUIRED;
-
-        //каждый раз будет создана новая транзакция(старая будет суспендится - не будет коммититься)
-//        final int propagationRequiredNew = TransactionDefinition.PROPAGATION_REQUIRES_NEW;
-
-        TransactionStatus status = txManager.getTransaction(
-                new DefaultTransactionDefinition(propagationRequired));
-        try{
-            List<Employee> result = employeeDao.findAll();
-            txManager.commit(status);
-            return result;
-        } catch (Exception e) {
-            txManager.rollback(status);
-            throw new RuntimeException(e);
-        }
-
+        return employeeDao.findAll();
     }
 
-    public void find(){
-        employeeDao.load(2);
+//    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
+    public Employee find(int id){
+        return employeeDao.findById(id);
     }
 }
