@@ -45,7 +45,7 @@ public class JdbcEmployeeDao implements EmployeeDao {
     public Employee findById(int id){
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employee WHERE id_empl = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employee WHERE employee_id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
@@ -62,8 +62,8 @@ public class JdbcEmployeeDao implements EmployeeDao {
 
     private Employee createEmployee(ResultSet resultSet) throws SQLException {
         Employee employee = new Employee();
-        employee.setId(resultSet.getInt("id_empl"));
-        employee.setSurName(resultSet.getString("surName"));
+        employee.setId(resultSet.getInt("employee_id"));
+        employee.setSurName(resultSet.getString("surname"));
         employee.setName(resultSet.getString("name"));
         employee.setPhone(resultSet.getString("phone"));
         employee.setBirthday(resultSet.getString("birthday"));
