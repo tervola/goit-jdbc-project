@@ -17,10 +17,15 @@
 
     <bean class="ua.com.tervola.jdbc.MainClass" id="mainClass">
         <property name="employee" ref="JdbcEmployeeDao"></property>
-        <property name="employeeController" ref="employeeController"/>
+        <property name="employeeController" ref="employeeController"></property>
+        <property name="databaseDao" ref="JdbcDatabaseDao"></property>
     </bean>
 
     <bean id="JdbcEmployeeDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcEmployeeDao">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <bean id="JdbcDatabaseDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcDatabaseDao">
         <property name="dataSource" ref="dataSource"></property>
     </bean>
 

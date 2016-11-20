@@ -76,7 +76,4 @@ public class JdbcEmployeeDao implements EmployeeDao {
         this.dataSource = dataSource;
     }
 
-    public ComboPooledDataSource getDataSource() {
-        return dataSource;
-    }
 }
