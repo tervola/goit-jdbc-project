@@ -5,11 +5,9 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <display-name>Clock Application</display-name>
+    <display-name>Caffe Application</display-name>
     <description>
-        This is a simple web application with a source code organization
-        based on the recommendations of the Application Developer's Guide.
-        Show current DateTime by Date();
+        This is a web application with a source code organization
     </description>
 
     <servlet>
@@ -19,8 +17,16 @@
 
     <servlet-mapping>
         <servlet-name>Coffee</servlet-name>
-        <url-pattern>/coffee</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:/**/application-context.xml
+        </param-value>
+    </context-param>
 
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 </web-app>
