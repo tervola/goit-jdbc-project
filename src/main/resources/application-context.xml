@@ -29,6 +29,7 @@
         <property name="databaseDao" ref="JdbcDatabaseDao"></property>
     </bean>
 
+    <!--DAOs-->
     <bean id="JdbcEmployeeDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcEmployeeDao">
         <property name="dataSource" ref="dataSource"></property>
     </bean>
@@ -53,11 +54,11 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
 
-
-
     <bean id="JdbcDatabaseDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcDatabaseDao">
         <property name="dataSource" ref="dataSource"></property>
     </bean>
+
+    <!--End DAOs-->
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
@@ -80,14 +81,36 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!--Controllers-->
     <bean class="ua.com.tervola.jdbc.controller.EmployeeController" id="employeeController">
         <property name="txManager" ref="txManager"/>
         <property name="employeeDao" ref="JdbcEmployeeDao"/>
+    </bean>
+
+    <bean class="ua.com.tervola.jdbc.controller.DishController" id="dishController">
+        <property name="dishDao" ref="JdbcDishDao"/>
+    </bean>
+
+    <bean class="ua.com.tervola.jdbc.controller.MenuController" id="menuController">
+        <property name="menuDao" ref="JdbcMenuDao"/>
+    </bean>
+
+    <bean class="ua.com.tervola.jdbc.controller.OrderController" id="orderController">
+        <property name="orderDao" ref="JdbcOrderDao"/>
+    </bean>
+
+    <bean class="ua.com.tervola.jdbc.controller.PreparedDishesController" id="preparedDishesController">
+        <property name="preparedDishesDao" ref="JdbcPreparedDishesDao"/>
+    </bean>
+
+    <bean class="ua.com.tervola.jdbc.controller.StoreDaoController" id="storeDaoController">
+        <property name="storeDao" ref="JdbcStoreDao"/>
     </bean>
 
     <bean class="ua.com.tervola.jdbc.controller.DatabaseController" id="dataBaseController">
         <property name="databaseDao" ref="JdbcDatabaseDao"/>
     </bean>
 
+    <!--End Controllers-->
 
 </beans>
