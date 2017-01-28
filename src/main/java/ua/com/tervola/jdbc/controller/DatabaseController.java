@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by user on 11/20/2016.
  */
-public class DataBaseController {
+public class DatabaseController {
 
     private DatabaseDao databaseDao;
 

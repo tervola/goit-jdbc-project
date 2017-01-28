@@ -2,7 +2,7 @@ package ua.com.tervola.jdbc.webpart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import ua.com.tervola.jdbc.controller.DataBaseController;
+import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.controller.EmployeeController;
 import ua.com.tervola.jdbc.model.Employee;
 
@@ -23,7 +23,7 @@ import java.util.List;
 public class MainServlet extends HttpServlet {
 
     @Autowired
-    private DataBaseController dataBaseController;
+    private DatabaseController dataBaseController;
 
     @Autowired
     private EmployeeController employeeController;
@@ -84,7 +84,7 @@ public class MainServlet extends HttpServlet {
         servletContext.getRequestDispatcher(page).forward(request,response);
     }
 
-//    public void setDataBaseController(DataBaseController dataBaseController) {
+//    public void setDataBaseController(DatabaseController dataBaseController) {
 //        this.dataBaseController = dataBaseController;
 //    }
 //
