@@ -18,10 +18,9 @@
     <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
 
 
-
     <!--<bean class="ua.com.tervola.jdbc.webpart.MainServlet" id="mainServlet">-->
-        <!--<property name="dataBaseController" ref="dataBaseController"/>-->
-        <!--<property name="employeeController" ref="employeeController"/>-->
+    <!--<property name="dataBaseController" ref="dataBaseController"/>-->
+    <!--<property name="employeeController" ref="employeeController"/>-->
     <!--</bean>-->
 
     <bean class="ua.com.tervola.jdbc.MainClass" id="mainClass">
@@ -40,13 +39,13 @@
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driver.class}" />
-        <property name="jdbcUrl" value="${jdbc.url}" />
-        <property name="user" value="${jdbc.user}" />
-        <property name="password" value="${jdbc.password}" />
-        <property name="minPoolSize" value="${jdbc.min.connections}" />
-        <property name="maxPoolSize" value="${jdbc.max.connections}" />
-        <property name="acquireIncrement" value="${jdbc.acquire.increment}" />
+        <property name="driverClass" value="${jdbc.driver.class}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="minPoolSize" value="${jdbc.min.connections}"/>
+        <property name="maxPoolSize" value="${jdbc.max.connections}"/>
+        <property name="acquireIncrement" value="${jdbc.acquire.increment}"/>
     </bean>
 
     <!--Location to property file-->
@@ -56,18 +55,17 @@
 
     <!--Transaction Mechanizm-->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-      <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean  class="ua.com.tervola.jdbc.controller.EmployeeController" id="employeeController">
+    <bean class="ua.com.tervola.jdbc.controller.EmployeeController" id="employeeController">
         <property name="txManager" ref="txManager"/>
         <property name="employeeDao" ref="JdbcEmployeeDao"/>
     </bean>
 
-    <bean  class="ua.com.tervola.jdbc.controller.DataBaseController" id="dataBaseController">
+    <bean class="ua.com.tervola.jdbc.controller.DataBaseController" id="dataBaseController">
         <property name="databaseDao" ref="JdbcDatabaseDao"/>
     </bean>
-
 
 
 </beans>

@@ -6,19 +6,23 @@
     <title>Caffee</title>
 </head>
 <body>
-Hi All,</br> Coming soon!!
+<h1>Select or modifying operations</h1>
 
-<table border="1" width="100" cellpadding="5">
-    <c:forEach items="${result}" var="name" varStatus="loop">
+<table border="0" width="300" cellpadding="5">
     <tr>
         <td>
-            ${loop.index+1}
-        </td>
-        <td>
-            ${name}
+            Inserting command:
         </td>
     </tr>
-    </c:forEach>
+    <tr>
+        <td>
+            <form action="modifying" method="post">
+                <input type="text" name="command" >
+                <input type="submit" value="Run">
+            </form>
+        </td>
+    </tr>
+
 </table>
 <%@include file="footer_back_menu.jsp" %>
 <%@include file="footer_copyright.jsp" %>

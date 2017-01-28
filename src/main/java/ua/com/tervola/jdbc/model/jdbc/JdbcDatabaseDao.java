@@ -22,19 +22,30 @@ public class JdbcDatabaseDao implements DatabaseDao {
     private ComboPooledDataSource dataSource;
 
     @Override
-    public boolean isConnected() throws SQLException {
-        return !dataSource.getConnection().isClosed();
+    public boolean isConnected() {
+        try {
+            return !dataSource.getConnection().isClosed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
-    public List<String> getAllTables() throws SQLException {
+    public List<String> getAllTables()  {
         List<String> result = new ArrayList<>();
-        Connection connection = dataSource.getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';");
-        while(resultSet.next()){
-            result.add(resultSet.getString("table_name"));
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';");
+            while(resultSet.next()){
+                result.add(resultSet.getString("table_name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
         System.out.println(result.toString());
         return result;
     }

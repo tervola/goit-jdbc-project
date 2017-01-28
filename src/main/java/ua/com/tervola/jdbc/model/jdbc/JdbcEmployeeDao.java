@@ -60,6 +60,54 @@ public class JdbcEmployeeDao implements EmployeeDao {
         }
     }
 
+    @Override
+    @Transactional
+    public void addEmployee(Employee employee){
+        try {
+            Connection connection = dataSource.getConnection();
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.append("INSERT INTO employee (employee_id,surname,name,birthday,phone,position,salary )");
+            sqlCommand.append("VALUES (?,?,?,?,?,?,?)");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand.toString());
+            preparedStatement.setInt(1,employee.getId());
+            preparedStatement.setString(2,employee.getSurName());
+            preparedStatement.setString(3,employee.getName());
+            preparedStatement.setDate(4, Date.valueOf(employee.getBirthday()));
+            preparedStatement.setString(5,employee.getPhone());
+            preparedStatement.setString(6,employee.getPosition());
+            preparedStatement.setFloat(7,employee.getSalary());
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+        } catch (SQLException e){
+            LOGGER.error("Error, while updating EMPLOYEE table");
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<Integer> getIndexes() throws SQLException {
+        List<Integer> result = new ArrayList<>();
+        try {
+            Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select employee_id from employee");
+            while(resultSet.next()){
+                int employee_id = resultSet.getInt("employee_id");
+                result.add(employee_id);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error occured during getting indexes " + dataSource.getJdbcUrl());
+            throw new RuntimeException(e);
+        }
+        return result;
+
+    }
+
     private Employee createEmployee(ResultSet resultSet) throws SQLException {
         Employee employee = new Employee();
         employee.setId(resultSet.getInt("employee_id"));
@@ -70,6 +118,27 @@ public class JdbcEmployeeDao implements EmployeeDao {
         employee.setPosition(resultSet.getString("position"));
         employee.setSalary(resultSet.getFloat("salary"));
         return employee;
+    }
+
+    @Override
+    @Transactional
+    public void removeEmployee(int employee_id) throws SQLException {
+        try {
+            Connection connection = dataSource.getConnection();
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.append("DELETE FROM employee WHERE employee_id = ?");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand.toString());
+            preparedStatement.setInt(1,employee_id);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+        } catch (SQLException e){
+            LOGGER.error("Error, while updating EMPLOYEE table");
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public void setDataSource(ComboPooledDataSource dataSource) {

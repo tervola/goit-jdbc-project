@@ -1,13 +1,10 @@
 package ua.com.tervola.jdbc.webpart;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import ua.com.tervola.jdbc.controller.DataBaseController;
 import ua.com.tervola.jdbc.controller.EmployeeController;
+import ua.com.tervola.jdbc.model.Employee;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -16,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,25 +23,18 @@ import java.util.List;
 public class MainServlet extends HttpServlet {
 
     @Autowired
-    DataBaseController dataBaseController;
+    private DataBaseController dataBaseController;
 
     @Autowired
-    EmployeeController employeeController;
+    private EmployeeController employeeController;
 
-    List<String> menuList = Arrays.asList("tables");
+    private static List<String> MENU_LIST = Arrays.asList("tables", "DAOobjects");
+    private static List<String> DAO_LIST = Arrays.asList("employeeDAO", "employeeDAO");
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-        /**
-        *   XML Based Configuration:
-        */
-//        super.init(config);
-//        WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-//        this.dataBaseController = (DataBaseController) applicationContext.getBean("dataBaseController");
-
-
     }
 
     @Override
@@ -59,22 +49,34 @@ public class MainServlet extends HttpServlet {
                 request.setAttribute("result", result);
                 pageRedirector("/tables.jsp", request, response);
             } catch (Exception e) {
-                request.setAttribute("error", "Error, during getting info from Databese: " + e.toString());
+                request.setAttribute("error", "Error, during getting info from Database: " + e.toString());
                 pageRedirector("/error.jsp", request, response);
             }
+        } else if (action.endsWith("daos")){
+            request.setAttribute("daos", DAO_LIST);
+            pageRedirector("/daoobjects.jsp", request, response);
         } else {
 
-            request.setAttribute("menu", menuList);
+            request.setAttribute("menu", MENU_LIST);
             pageRedirector("/mainPage.jsp", request, response);
         }
 
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = getAction(req);
-        int a = 2;
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = getAction(request);
 
+        if(action.endsWith("modifying")){
+            List<Employee> employees = employeeController.getAllEmployees();
+            List<List<String>> result= new ArrayList<>();
+            for (Employee employee : employees) {
+
+            }
+
+            request.setAttribute("command_result", result);
+            pageRedirector("/command_result.jsp", request, response);
+        }
     }
 
     private void pageRedirector(String page,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
