@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface DatabaseDao {
 
-    boolean isConnected() throws SQLException;
+    boolean isDisconnected() throws SQLException;
 
     List<String> getAllTables() throws SQLException;
 }

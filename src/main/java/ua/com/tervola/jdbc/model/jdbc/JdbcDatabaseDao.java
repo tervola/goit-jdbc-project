@@ -22,9 +22,9 @@ public class JdbcDatabaseDao implements DatabaseDao {
     private ComboPooledDataSource dataSource;
 
     @Override
-    public boolean isConnected() {
+    public boolean isDisconnected() {
         try {
-            return !dataSource.getConnection().isClosed();
+            return dataSource.getConnection().isClosed();
         } catch (SQLException e) {
             e.printStackTrace();
         }

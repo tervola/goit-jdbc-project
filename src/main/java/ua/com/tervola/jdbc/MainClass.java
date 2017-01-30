@@ -31,9 +31,9 @@ public class MainClass {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
         MainClass main = context.getBean(MainClass.class);
 //        main.start();
-//        main.startController();
+        main.startController();
 //            main.startFromDB();
-        main.addNewEmploee();
+//        main.addNewEmploee();
     }
 
     private void addNewEmploee() throws SQLException {

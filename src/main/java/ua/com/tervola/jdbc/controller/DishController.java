@@ -16,16 +16,16 @@ public class DishController {
         this.dishDao = dishDao;
     }
 
-    void addNewDish() {
-        this.dishDao.addNewDish();
+    void addNewDish(Dish dish) {
+        this.dishDao.addNewDish(dish);
     }
 
-    void removeDish() {
-        this.dishDao.removeDish();
+    void removeDish(int id) {
+        this.dishDao.removeDish(id);
     }
 
-    Dish findDishByName() {
-        return this.dishDao.findDishByName();
+    Dish findDishByName(String title) {
+        return this.dishDao.findDishByName(title);
     }
 
     List<Dish> findAllDishes() {

@@ -7,10 +7,11 @@ import java.util.List;
  */
 public interface DishDao {
 
-    void addNewDish();
-    void removeDish();
-    Dish findDishByName();
+    void addNewDish(Dish dish);
+
+    void removeDish(int id);
+
+    Dish findDishByName(String title);
+
     List<Dish> findAllDishes();
-
-
 }

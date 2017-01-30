@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by user on 11/4/2016.
  */
-public class JdbcEmployeeDao implements EmployeeDao {
+public class JdbcEmployeeDao extends  AbstractJdbcTablesDao implements EmployeeDao {
     private static Logger LOGGER = LogManager.getLogger(JdbcEmployeeDao.class);
 
     private ComboPooledDataSource dataSource;
@@ -28,7 +28,7 @@ public class JdbcEmployeeDao implements EmployeeDao {
         try {
             Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from employee");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM employee");
             while(resultSet.next()){
                 Employee employee = createEmployee(resultSet);
                 result.add(employee);
@@ -123,22 +123,7 @@ public class JdbcEmployeeDao implements EmployeeDao {
     @Override
     @Transactional
     public void removeEmployee(int employee_id) throws SQLException {
-        try {
-            Connection connection = dataSource.getConnection();
-            StringBuilder sqlCommand = new StringBuilder();
-            sqlCommand.append("DELETE FROM employee WHERE employee_id = ?");
-
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand.toString());
-            preparedStatement.setInt(1,employee_id);
-
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-
-        } catch (SQLException e){
-            LOGGER.error("Error, while updating EMPLOYEE table");
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
+        removeFromTable(employee_id, "employee");
     }
 
     public void setDataSource(ComboPooledDataSource dataSource) {
