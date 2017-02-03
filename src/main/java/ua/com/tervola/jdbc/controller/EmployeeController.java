@@ -1,6 +1,8 @@
 package ua.com.tervola.jdbc.controller;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.tervola.jdbc.model.Employee;
@@ -16,22 +18,19 @@ public class EmployeeController {
     private PlatformTransactionManager txManager;
     private EmployeeDao employeeDao;
 
-    public void setTxManager(PlatformTransactionManager txManager) {
+    public EmployeeController(PlatformTransactionManager txManager, EmployeeDao employeeDao) {
         this.txManager = txManager;
-    }
-
-    public void setEmployeeDao(EmployeeDao employeeDao) {
         this.employeeDao = employeeDao;
     }
 
 //    @Transactional(propagation = Propagation.REQUIRED)
-    @Transactional
+//    @Transactional
     public List<Employee> getAllEmployees(){
         return employeeDao.findAll();
     }
 
 //    @Transactional(propagation = Propagation.REQUIRED)
-    @Transactional
+//    @Transactional
     public Employee find(int id){
         return employeeDao.findById(id);
     }

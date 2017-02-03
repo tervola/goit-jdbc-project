@@ -53,4 +53,9 @@ public class JdbcDatabaseDao implements DatabaseDao {
     public void setDataSource(ComboPooledDataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+    @Override
+    public ComboPooledDataSource getDataSource() {
+        return dataSource;
+    }
 }

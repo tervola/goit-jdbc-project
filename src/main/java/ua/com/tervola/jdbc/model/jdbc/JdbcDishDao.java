@@ -3,6 +3,8 @@ package ua.com.tervola.jdbc.model.jdbc;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
+import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.Dish;
 import ua.com.tervola.jdbc.model.DishDao;
 
@@ -16,19 +18,29 @@ import java.util.List;
 public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
     private static Logger LOGGER = LogManager.getLogger(JdbcDishDao.class);
-
+    private static String TABLE_DISH = "dish";
+    private static String FIELD_CATEGORY = "category";
+    private static String FIELD_COST = "cost";
+    private static String FIELD_WEIGHT = "weight";
+    private static String FIELD_DISH_ID = "dish_di";
+    private static String FIELD_TITLE = "title";
     private ComboPooledDataSource dataSource;
+
+    public JdbcDishDao(DatabaseController databaseController) {
+        super(databaseController);
+    }
 
     public void setDataSource(ComboPooledDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
+    @Transactional
     public void addNewDish(Dish dish) {
         try {
             Connection connection = dataSource.getConnection();
             StringBuilder sqlCommand = new StringBuilder();
-            sqlCommand.append("INSERT INTO dish (category,cost,weight,dish_di,title )");
+            sqlCommand.append(String.format("INSERT INTO dish (%s,%s,%s,%s,%s )",FIELD_CATEGORY,FIELD_COST,FIELD_WEIGHT, FIELD_DISH_ID, FIELD_TITLE));
             sqlCommand.append("VALUES (?,?,?,?,?)");
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand.toString());
@@ -42,7 +54,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
             preparedStatement.close();
 
         } catch (SQLException e){
-            LOGGER.error("Error, while updating EMPLOYEE table");
+            LOGGER.error(String.format("Error, while updating %s table", TABLE_DISH));
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -50,20 +62,17 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
     @Override
     public void removeDish(int id) {
-        removeFromTable(id, "dish");
+        removeFromTable(id, TABLE_DISH, FIELD_DISH_ID);
     }
 
     @Override
-    public Dish findDishByName(String title) {
+    public Dish findDishByName(String name) {
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM dish WHERE title = ?");
-            preparedStatement.setString(1, title);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = findInTable(name, TABLE_DISH, FIELD_TITLE);
             if (resultSet.next()){
                 return createDish(resultSet);
             } else {
-                throw new RuntimeException("Cannot find dish with id " + title);
+                throw new RuntimeException("Cannot find dish with name " + name);
             }
 
         } catch (SQLException e){
@@ -77,9 +86,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
         List<Dish> result = new ArrayList<>();
         try {
-            Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM dish");
+            ResultSet resultSet = findIntabledAllRecords(TABLE_DISH);
             while(resultSet.next()){
                 Dish dish = createDish(resultSet);
                 result.add(dish);
@@ -92,13 +99,34 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
     }
 
+    @Override
+    public Dish findDishById(int id) {
+        try {
+            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_DISH, FIELD_DISH_ID );
+            if (resultSet.next()){
+                return createDish(resultSet);
+            } else {
+                throw new RuntimeException("Cannot find dish with id " + id);
+            }
+
+        } catch (SQLException e){
+            LOGGER.error("Error occured during connection to " + dataSource.getJdbcUrl() + " User is:" + dataSource.getUser() + " Password is: " + dataSource.getPassword());
+            throw new RuntimeException(e);
+        }
+    }
+
     private Dish createDish(ResultSet resultSet) throws SQLException {
         Dish dish = new Dish();
-        dish.setCategory(resultSet.getString("category"));
-        dish.setCost(resultSet.getInt("cost"));
-        dish.setDish_id(resultSet.getInt("dish_di")); // TODO: rename field
-        dish.setTitle(resultSet.getString("title"));
-        dish.setWeight(resultSet.getDouble("weight"));
+        dish.setCategory(resultSet.getString(FIELD_CATEGORY));
+        dish.setCost(resultSet.getInt(FIELD_COST));
+        dish.setDish_id(resultSet.getInt(FIELD_DISH_ID)); // TODO: rename field
+        dish.setTitle(resultSet.getString(FIELD_TITLE));
+        dish.setWeight(resultSet.getDouble(FIELD_WEIGHT));
         return dish;
+    }
+
+    @Override
+    public List<Integer> getIndexes() throws SQLException {
+        return getIndexesFromTable(FIELD_DISH_ID,TABLE_DISH);
     }
 }

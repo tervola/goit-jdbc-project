@@ -28,6 +28,10 @@ public class DishController {
         return this.dishDao.findDishByName(title);
     }
 
+    Dish findDishById(int id) {
+        return this.dishDao.findDishById(id);
+    }
+
     List<Dish> findAllDishes() {
         return this.dishDao.findAllDishes();
     }

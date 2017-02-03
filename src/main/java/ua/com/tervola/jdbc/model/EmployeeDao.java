@@ -1,5 +1,6 @@
 package ua.com.tervola.jdbc.model;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
@@ -13,6 +14,8 @@ public interface EmployeeDao {
     Employee findById(int id);
 
     List<Employee> findAll();
+
+    Employee findByName(String employeeName);
 
     void addEmployee(Employee employee);
 

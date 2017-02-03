@@ -1,5 +1,8 @@
 package ua.com.tervola.jdbc.model;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -14,4 +17,9 @@ public interface DishDao {
     Dish findDishByName(String title);
 
     List<Dish> findAllDishes();
+
+    Dish findDishById(int id);
+
+    @Transactional
+    List<Integer> getIndexes() throws SQLException;
 }
