@@ -49,4 +49,15 @@ public class Dish {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "category='" + category + '\'' +
+                ", cost=" + cost +
+                ", weight=" + weight +
+                ", dish_id=" + dish_id +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

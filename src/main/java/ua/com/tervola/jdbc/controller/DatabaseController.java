@@ -21,10 +21,6 @@ public class DatabaseController {
         this.dataSource = dataSource;
     }
 
-    public void setDatabaseDao(DatabaseDao databaseDao) {
-        this.databaseDao = databaseDao;
-    }
-
     public List<String> getAllTables() throws SQLException {
         return databaseDao.getAllTables();
     }

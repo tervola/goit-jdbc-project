@@ -34,7 +34,6 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
 
 
     @Override
-//    @Transactional(propagation = Propagation.MANDATORY)
     public List<Employee> findAll() {
         List<Employee> result = new ArrayList<>();
         try {
@@ -51,14 +50,13 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     }
 
     @Override
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Employee findById(int id) {
         try {
             ResultSet resultSet = findInTable(String.valueOf(id), TABLE_EMPLOYEE, FIELD_EMPLOYEE_ID);
             if (resultSet.next()) {
                 return createEmployee(resultSet);
             } else {
-                throw new RuntimeException("Cannot find employee with id " + id);
+                throw new RuntimeException("Cannot findById employee with id " + id);
             }
 
         } catch (SQLException e) {
@@ -68,14 +66,13 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     }
 
     @Override
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Employee findByName(String employeeName) {
         try {
             ResultSet resultSet = findInTable(employeeName, TABLE_EMPLOYEE, FIELD_NAME);
             if (resultSet.next()) {
                 return createEmployee(resultSet);
             } else {
-                throw new RuntimeException("Cannot find employee with name: " + employeeName);
+                throw new RuntimeException("Cannot findById employee with name: " + employeeName);
             }
 
         } catch (SQLException e) {
@@ -85,7 +82,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     }
 
     @Override
-//    @Transactional
+    @Transactional
     public void addEmployee(Employee employee) {
         try {
             Connection connection = getDatabaseController().getConnection();
@@ -120,9 +117,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
         }
     }
 
-    @Override
-//    @Transactional
-    public List<Integer> getIndexes() throws SQLException {
+    private List<Integer> getIndexes() throws SQLException {
         return getIndexesFromTable(FIELD_EMPLOYEE_ID, TABLE_EMPLOYEE);
     }
 

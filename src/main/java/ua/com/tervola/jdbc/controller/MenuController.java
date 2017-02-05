@@ -1,6 +1,5 @@
 package ua.com.tervola.jdbc.controller;
 
-import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.MenuDao;
 import ua.com.tervola.jdbc.model.ProjectMenu;
 
@@ -12,23 +11,27 @@ import java.util.List;
 public class MenuController {
 
     private MenuDao menuDao;
-    public void setMenuDao(MenuDao menuDao) {
+
+    public MenuController(MenuDao menuDao) {
         this.menuDao = menuDao;
     }
 
-    void createNewMenu(){
-        this.menuDao.createNewMenu();
+    public void createNewMenu(ProjectMenu menu){
+        this.menuDao.createNewMenu(menu);
     }
-    void removeMenu() {
-        this.menuDao.removeMenu();
+    public void removeMenu(int id) {
+        this.menuDao.removeMenu(id);
     }
-    void modifyMenu(int menu_id) {
-        this.menuDao.modifyMenu(menu_id);
+    public boolean modifyMenu(int menu_id, ProjectMenu menu) {
+        return this.menuDao.modifyMenu(menu_id, menu);
     }
-    ProjectMenu fingMenuByName(String menuName) {
-        return this.menuDao.fingMenuByName(menuName);
+    public ProjectMenu findMenuByName(String menuName) {
+        return this.menuDao.findMenuByName(menuName);
     }
-    List<ProjectMenu> findAllMenu() {
+    public ProjectMenu findMenuById(int id) {
+        return this.menuDao.findMenuById(id);
+    }
+    public List<ProjectMenu> findAllMenu() {
         return this.menuDao.findAllMenu();
     }
 }

@@ -23,4 +23,12 @@ public class ProjectMenu {
     public void setMenuName(String menuName) {
         this.menuName = menuName;
     }
+
+    @Override
+    public String toString() {
+        return "ProjectMenu{" +
+                "menu_id=" + menu_id +
+                ", menuName='" + menuName + '\'' +
+                '}';
+    }
 }

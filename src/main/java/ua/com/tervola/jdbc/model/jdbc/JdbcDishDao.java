@@ -24,26 +24,20 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
     private static String FIELD_WEIGHT = "weight";
     private static String FIELD_DISH_ID = "dish_di";
     private static String FIELD_TITLE = "title";
-    private ComboPooledDataSource dataSource;
 
     public JdbcDishDao(DatabaseController databaseController) {
         super(databaseController);
-    }
-
-    public void setDataSource(ComboPooledDataSource dataSource) {
-        this.dataSource = dataSource;
     }
 
     @Override
     @Transactional
     public void addNewDish(Dish dish) {
         try {
-            Connection connection = dataSource.getConnection();
             StringBuilder sqlCommand = new StringBuilder();
             sqlCommand.append(String.format("INSERT INTO dish (%s,%s,%s,%s,%s )",FIELD_CATEGORY,FIELD_COST,FIELD_WEIGHT, FIELD_DISH_ID, FIELD_TITLE));
             sqlCommand.append("VALUES (?,?,?,?,?)");
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand.toString());
+            PreparedStatement preparedStatement = getDatabaseController().getConnection().prepareStatement(sqlCommand.toString());
             preparedStatement.setString(1,dish.getCategory());
             preparedStatement.setInt(2,dish.getCost());
             preparedStatement.setDouble(3,dish.getWeight());
@@ -72,11 +66,13 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
             if (resultSet.next()){
                 return createDish(resultSet);
             } else {
-                throw new RuntimeException("Cannot find dish with name " + name);
+                throw new RuntimeException("Cannot findById dish with name " + name);
             }
 
         } catch (SQLException e){
-            LOGGER.error("Error occured during connection to " + dataSource.getJdbcUrl() + " User is:" + dataSource.getUser() + " Password is: " + dataSource.getPassword());
+            LOGGER.error("Error occured during connection to " + getDatabaseController().getManager().getJdbcUrl() +
+                    " User is:" + getDatabaseController().getManager().getUser() +
+                    " Password is: " + getDatabaseController().getManager().getPassword());
             throw new RuntimeException(e);
         }
     }
@@ -92,7 +88,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
                 result.add(dish);
             }
         } catch (SQLException e) {
-            LOGGER.error("Error occured during connection to " + dataSource.getJdbcUrl());
+            LOGGER.error("Error occured during connection to " + getDatabaseController().getManager().getJdbcUrl());
             throw new RuntimeException(e);
         }
         return result;
@@ -106,11 +102,13 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
             if (resultSet.next()){
                 return createDish(resultSet);
             } else {
-                throw new RuntimeException("Cannot find dish with id " + id);
+                throw new RuntimeException("Cannot findById dish with id " + id);
             }
 
         } catch (SQLException e){
-            LOGGER.error("Error occured during connection to " + dataSource.getJdbcUrl() + " User is:" + dataSource.getUser() + " Password is: " + dataSource.getPassword());
+            LOGGER.error("Error occured during connection to " + getDatabaseController().getManager().getJdbcUrl() +
+                    " User is:" + getDatabaseController().getManager().getUser() +
+                    " Password is: " + getDatabaseController().getManager().getPassword());
             throw new RuntimeException(e);
         }
     }

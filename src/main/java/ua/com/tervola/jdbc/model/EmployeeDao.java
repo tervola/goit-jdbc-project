@@ -19,7 +19,5 @@ public interface EmployeeDao {
 
     void addEmployee(Employee employee);
 
-    List<Integer> getIndexes() throws SQLException;
-
     void removeEmployee(int employee_id) throws SQLException;
 }

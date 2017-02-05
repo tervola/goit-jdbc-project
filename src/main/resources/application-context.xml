@@ -14,7 +14,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="ua.com.tervola.jdbc"/>
 
-    <!--find Transactions annotations-->
+    <!--findById Transactions annotations-->
     <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
@@ -29,9 +29,11 @@
 
 
     <bean class="ua.com.tervola.jdbc.MainClass" id="mainClass">
-        <property name="employeeController" ref="employeeController"></property>
         <property name="databaseDao" ref="JdbcDatabaseDao"></property>
         <property name="databaseController" ref="dataBaseController"></property>
+        <property name="employeeController" ref="employeeController"></property>
+        <property name="dishController" ref="dishController"></property>
+        <property name="menuController" ref="menuController"></property>
 
     </bean>
 
@@ -41,17 +43,16 @@
     </bean>
 
     <bean id="JdbcEmployeeDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcEmployeeDao">
-
         <constructor-arg name="databaseController" ref="dataBaseController"/>
     </bean>
 
-    <!--<bean id="JdbcDishDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcDishDao">-->
-        <!--<property name="dataSource" ref="dataSource"></property>-->
-    <!--</bean>-->
+    <bean id="JdbcDishDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcDishDao">
+        <constructor-arg name="databaseController" ref="dataBaseController"/>
+    </bean>
 
-    <!--<bean id="JdbcMenuDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcMenuDao">-->
-        <!--<property name="dataSource" ref="dataSource"></property>-->
-    <!--</bean>-->
+    <bean id="JdbcMenuDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcMenuDao">
+        <constructor-arg name="databaseController" ref="dataBaseController"/>
+    </bean>
 
     <!--<bean id="JdbcOrderDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcOrderDao">-->
         <!--<property name="dataSource" ref="dataSource"></property>-->
@@ -87,13 +88,15 @@
         <constructor-arg index="1" ref="JdbcEmployeeDao"/>
     </bean>
 
-    <!--<bean class="ua.com.tervola.jdbc.controller.DishController" id="dishController">-->
-        <!--<property name="dishDao" ref="JdbcDishDao"/>-->
-    <!--</bean>-->
+    <bean class="ua.com.tervola.jdbc.controller.DishController" id="dishController">
+        <constructor-arg index="0" ref="JdbcDishDao"/>
+        <!--<constructor-arg index="1" ref="dataSource"/>-->
+    </bean>
 
-    <!--<bean class="ua.com.tervola.jdbc.controller.MenuController" id="menuController">-->
-        <!--<property name="menuDao" ref="JdbcMenuDao"/>-->
-    <!--</bean>-->
+    <bean class="ua.com.tervola.jdbc.controller.MenuController" id="menuController">
+        <constructor-arg index="0" ref="JdbcMenuDao"/>
+        <!--<constructor-arg index="1" ref="dataSource"/>-->
+    </bean>
 
     <!--<bean class="ua.com.tervola.jdbc.controller.OrderController" id="orderController">-->
         <!--<property name="orderDao" ref="JdbcOrderDao"/>-->
@@ -108,7 +111,6 @@
     <!--</bean>-->
 
     <bean class="ua.com.tervola.jdbc.controller.DatabaseController" id="dataBaseController">
-
         <constructor-arg index="0" ref="JdbcDatabaseDao"/>
         <constructor-arg index="1" ref="dataSource"/>
     </bean>

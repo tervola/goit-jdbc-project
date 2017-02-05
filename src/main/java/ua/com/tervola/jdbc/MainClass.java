@@ -5,12 +5,12 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ua.com.tervola.jdbc.controller.DatabaseController;
+import ua.com.tervola.jdbc.controller.DishController;
 import ua.com.tervola.jdbc.controller.EmployeeController;
+import ua.com.tervola.jdbc.controller.MenuController;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.Employee;
-import ua.com.tervola.jdbc.model.EmployeeDao;
 
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -21,8 +21,10 @@ public class MainClass {
     private Logger LOGGER = LogManager.getLogger(MainClass.class);
 
     DatabaseDao databaseDao;
-    EmployeeController employeeController;
     DatabaseController databaseController;
+    EmployeeController employeeController;
+    DishController dishController;
+    MenuController menuController;
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
@@ -70,9 +72,23 @@ public class MainClass {
 
     private void start() throws ClassNotFoundException, SQLException {
         LOGGER.info("prepared to call to DAO from start");
+        System.out.println("Employee:");
         employeeController.getAllEmployees().forEach(System.out::println);
         System.out.println("---------");
-//        System.out.println(employeeDao.findById(1));
+        System.out.println(employeeController.findById(1));
+
+        LOGGER.info("prepared to call to DishDAO");
+        System.out.println("Dish:");
+        dishController.findAllDishes().forEach(System.out::println);
+        System.out.println("---------");
+        System.out.println(dishController.findDishById(1));
+
+        LOGGER.info("prepared to call to MenuDAO ");
+        System.out.println("Menu");
+        menuController.findAllMenu().forEach(System.out::println);
+        System.out.println("---------");
+        System.out.println(menuController.findMenuById(1));
+
 
 
     }
@@ -81,7 +97,7 @@ public class MainClass {
         LOGGER.info("prepared to call to DAO from startController");
         employeeController.getAllEmployees().forEach(System.out::println);
         System.out.println("---------");
-        System.out.println(employeeController.find(1));
+        System.out.println(employeeController.findById(1));
 
     }
 
@@ -96,5 +112,13 @@ public class MainClass {
 
     public void setDatabaseController(DatabaseController databaseController) {
         this.databaseController = databaseController;
+    }
+
+    public void setDishController(DishController dishController) {
+        this.dishController = dishController;
+    }
+
+    public void setMenuController(MenuController menuController) {
+        this.menuController = menuController;
     }
 }

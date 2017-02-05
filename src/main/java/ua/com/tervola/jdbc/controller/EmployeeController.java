@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.tervola.jdbc.model.Employee;
 import ua.com.tervola.jdbc.model.EmployeeDao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -31,9 +32,20 @@ public class EmployeeController {
 
 //    @Transactional(propagation = Propagation.REQUIRED)
 //    @Transactional
-    public Employee find(int id){
+    public Employee findById(int id){
         return employeeDao.findById(id);
     }
 
+    public Employee findByName(String name){
+        return employeeDao.findByName(name);
+    }
+
+    void addEmployee(Employee employee){
+        employeeDao.addEmployee(employee);
+    }
+
+    void removeEmployee(int employee_id) throws SQLException {
+        employeeDao.removeEmployee(employee_id);
+    }
 
 }

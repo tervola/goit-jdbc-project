@@ -29,12 +29,12 @@ public class AbstractJdbcTablesDao {
         return this.databaseController;
     }
 
-//    @Transactional
+    @Transactional
     protected void removeFromTable(int index, String tableName, String field) {
         try {
-            String sqlCommand = String.format("DELETE FROM %s WHERE %s = %s",tableName,field, index);
+            String sqlCommand = String.format("DELETE FROM %s WHERE %s = %s", tableName, field, index);
 
-            PreparedStatement preparedStatement = this.databaseController.getConnection().prepareStatement(sqlCommand);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sqlCommand);
             preparedStatement.executeUpdate();
             preparedStatement.close();
 
@@ -45,11 +45,16 @@ public class AbstractJdbcTablesDao {
         }
     }
 
-//    @Transactional
+    private Connection getConnection() throws SQLException {
+        return this.databaseController.getConnection();
+    }
+
+    @Transactional
     protected ResultSet findInTable(String fieldName, String tableName, String idField) {
         try {
-            Connection connection = this.databaseController.getConnection();
             String sqlCommand = String.format("SELECT * FROM %s WHERE %s = %s", tableName, fieldName, idField);
+
+            Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand);
             return preparedStatement.executeQuery();
 
@@ -59,12 +64,11 @@ public class AbstractJdbcTablesDao {
         }
     }
 
-//    @Transactional
+    @Transactional
     protected ResultSet findIntabledAllRecords(String tableName) {
 
         try {
-            Connection connection = this.databaseController.getConnection();
-            Statement statement = connection.createStatement();
+            Statement statement = getConnection().createStatement();
             String sqlCommand = String.format("SELECT * FROM %s", tableName);
             return statement.executeQuery(sqlCommand);
         } catch (SQLException e) {
@@ -73,12 +77,11 @@ public class AbstractJdbcTablesDao {
         }
     }
 
-//    @Transactional
+    @Transactional
     public List<Integer> getIndexesFromTable(String field, String table) throws SQLException {
         List<Integer> result = new ArrayList<>();
         try {
-            Connection connection = this.databaseController.getConnection();
-            Statement statement = connection.createStatement();
+            Statement statement = getConnection().createStatement();
             String sqlCommand = String.format("SELECT %s FROM %s", field, table);
             ResultSet resultSet = statement.executeQuery(sqlCommand);
             while (resultSet.next()) {
@@ -92,5 +95,25 @@ public class AbstractJdbcTablesDao {
         }
 
         return result;
+    }
+
+    @Transactional
+    protected boolean updateTable(int id, String tableName, String dataSet, String fieldId) {
+        boolean success = false;
+        try {
+            Statement statement = getConnection().createStatement();
+            String sqlCommand = String.format("UPDATE %s SET %s WHERE %s = %s", tableName, dataSet, fieldId, id);
+
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sqlCommand);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            success = true;
+
+        } catch (SQLException e) {
+            LOGGER.error("Error occured during updating table " + this.databaseController.getManager().getJdbcUrl());
+            throw new RuntimeException(e);
+        }
+
+        return success;
     }
 }

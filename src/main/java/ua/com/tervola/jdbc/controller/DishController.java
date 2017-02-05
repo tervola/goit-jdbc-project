@@ -1,8 +1,10 @@
 package ua.com.tervola.jdbc.controller;
 
+import org.springframework.transaction.PlatformTransactionManager;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.Dish;
 import ua.com.tervola.jdbc.model.DishDao;
+import ua.com.tervola.jdbc.model.EmployeeDao;
 
 import java.util.List;
 
@@ -10,29 +12,36 @@ import java.util.List;
  * Created by user on 1/28/2017.
  */
 public class DishController {
+
     private DishDao dishDao;
+
+//    private PlatformTransactionManager txManager;
+    public DishController( DishDao dishDao) {
+//        this.txManager = txManager;
+        this.dishDao = dishDao;
+    }
 
     public void setDishDao(DishDao dishDao) {
         this.dishDao = dishDao;
     }
 
-    void addNewDish(Dish dish) {
+    public void addNewDish(Dish dish) {
         this.dishDao.addNewDish(dish);
     }
 
-    void removeDish(int id) {
+    public void removeDish(int id) {
         this.dishDao.removeDish(id);
     }
 
-    Dish findDishByName(String title) {
+    public Dish findDishByName(String title) {
         return this.dishDao.findDishByName(title);
     }
 
-    Dish findDishById(int id) {
+    public Dish findDishById(int id) {
         return this.dishDao.findDishById(id);
     }
 
-    List<Dish> findAllDishes() {
+    public List<Dish> findAllDishes() {
         return this.dishDao.findAllDishes();
     }
 
