@@ -22,8 +22,8 @@ public class MenuController {
     public void removeMenu(int id) {
         this.menuDao.removeMenu(id);
     }
-    public boolean modifyMenu(int menu_id, ProjectMenu menu) {
-        return this.menuDao.modifyMenu(menu_id, menu);
+    public boolean modifyMenu(ProjectMenu menu) {
+        return this.menuDao.modifyMenu( menu);
     }
     public ProjectMenu findMenuByName(String menuName) {
         return this.menuDao.findMenuByName(menuName);

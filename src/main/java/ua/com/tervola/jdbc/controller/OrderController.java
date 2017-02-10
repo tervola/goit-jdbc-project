@@ -13,31 +13,31 @@ public class OrderController {
 
     private OrderDao orderDao;
 
-    public void setOrderDao(OrderDao orderDao) {
+    public OrderController(OrderDao orderDao) {
         this.orderDao = orderDao;
     }
 
-    void createOrder(Order order){
+    public void createOrder(Order order){
         this.orderDao.createOrder(order);
     }
 
-    void closeOrder(int order_id) {
+    public void closeOrder(int order_id) {
         this.orderDao.closeOrder(order_id);
     }
 
-    void updateOpenedOrder(int order_id){
-        this.orderDao.updateOpenedOrder(order_id);
+    public void updateOpenedOrder(String operation, int order_id, int dish_id){
+        this.orderDao.updateOpenedOrder(operation, order_id, dish_id);
     }
 
-    void removeOpenedOrder(int order_id){
+    public void removeOpenedOrder(int order_id){
         this.orderDao.removeOpenedOrder(order_id);
     }
 
-    List<Order> findOpenedOrders(){
-        return this.orderDao.findOpenedOrders();
+    public List<Order> findOpenedOrders(){
+        return this.orderDao.findOrders(false);
     }
 
-    List<Order> findClosedOrders() {
-        return this.orderDao.findClosedOrders();
+    public List<Order> findClosedOrders() {
+        return this.orderDao.findOrders(true);
     }
 }

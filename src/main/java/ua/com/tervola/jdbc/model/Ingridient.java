@@ -6,7 +6,7 @@ package ua.com.tervola.jdbc.model;
 public class Ingridient {
 
     int ingridient_id;
-    String ingridient_name;
+    int amount;
 
     public int getIngridient_id() {
         return ingridient_id;
@@ -16,11 +16,19 @@ public class Ingridient {
         this.ingridient_id = ingridient_id;
     }
 
-    public String getIngridient_name() {
-        return ingridient_name;
+    public int getIngridientAmount() {
+        return amount;
     }
 
-    public void setIngridient_name(String ingridient_name) {
-        this.ingridient_name = ingridient_name;
+    public void setIngridientAmount(int amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingridient{" +
+                "ingridient_id=" + ingridient_id +
+                ", amount=" + amount +
+                '}';
     }
 }

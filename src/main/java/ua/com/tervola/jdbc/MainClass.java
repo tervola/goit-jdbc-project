@@ -4,10 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ua.com.tervola.jdbc.controller.DatabaseController;
-import ua.com.tervola.jdbc.controller.DishController;
-import ua.com.tervola.jdbc.controller.EmployeeController;
-import ua.com.tervola.jdbc.controller.MenuController;
+import ua.com.tervola.jdbc.controller.*;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.Employee;
 
@@ -25,6 +22,9 @@ public class MainClass {
     EmployeeController employeeController;
     DishController dishController;
     MenuController menuController;
+    OrderController orderController;
+    PreparedDishesController preparedDishesController;
+    StoreController storeController;
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
@@ -89,13 +89,30 @@ public class MainClass {
         System.out.println("---------");
         System.out.println(menuController.findMenuById(1));
 
+        //TODO: orders closed/opened
+        LOGGER.info("prepared to call to OrderDAO ");
+        System.out.println("Opened Orders");
+        orderController.findOpenedOrders().forEach(System.out::println);
+        System.out.println("Closeded Orders");
+        orderController.findOpenedOrders().forEach(System.out::println);
+        System.out.println("---------");
+        System.out.println(menuController.findMenuById(1));
 
+        LOGGER.info("prepared to call to PreparedDishesDAO ");
+        System.out.println("Prepared Dishes");
+        preparedDishesController.findAllPreparedDishes().forEach(System.out::println);
+        System.out.println("---------");
+
+        LOGGER.info("prepared to call to StoreDao ");
+        System.out.println("Storage");
+        storeController.findAllIngridients().forEach(System.out::println);
+        System.out.println("---------");
 
     }
 
     private void startController() throws ClassNotFoundException, SQLException {
-        LOGGER.info("prepared to call to DAO from startController");
-        employeeController.getAllEmployees().forEach(System.out::println);
+        LOGGER.info("prepared to call to DAO from preparedDishesController");
+        preparedDishesController.findAllPreparedDishes().forEach(System.out::println);
         System.out.println("---------");
         System.out.println(employeeController.findById(1));
 
@@ -120,5 +137,17 @@ public class MainClass {
 
     public void setMenuController(MenuController menuController) {
         this.menuController = menuController;
+    }
+
+    public void setOrderController(OrderController orderController) {
+        this.orderController = orderController;
+    }
+
+    public void setPreparedDishesController(PreparedDishesController preparedDishesController) {
+        this.preparedDishesController = preparedDishesController;
+    }
+
+    public void setStoreController(StoreController storeController) {
+        this.storeController = storeController;
     }
 }

@@ -54,4 +54,15 @@ public class Order {
     public void setOpened(boolean opened) {
         isOpened = opened;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "order_id=" + order_id +
+                ", employee_id=" + employee_id +
+                ", tebleNumber=" + tebleNumber +
+                ", date='" + date + '\'' +
+                ", isOpened=" + isOpened +
+                '}';
+    }
 }

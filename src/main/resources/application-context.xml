@@ -34,6 +34,9 @@
         <property name="employeeController" ref="employeeController"></property>
         <property name="dishController" ref="dishController"></property>
         <property name="menuController" ref="menuController"></property>
+        <property name="orderController" ref="orderController"></property>
+        <property name="preparedDishesController" ref="preparedDishesController"></property>
+        <property name="storeController" ref="storeController"></property>
 
     </bean>
 
@@ -54,17 +57,17 @@
         <constructor-arg name="databaseController" ref="dataBaseController"/>
     </bean>
 
-    <!--<bean id="JdbcOrderDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcOrderDao">-->
-        <!--<property name="dataSource" ref="dataSource"></property>-->
-    <!--</bean>-->
+    <bean id="JdbcOrderDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcOrderDao">
+        <constructor-arg name="databaseController" ref="dataBaseController"/>
+    </bean>
 
-    <!--<bean id="JdbcPreparedDishesDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcPreparedDishesDao">-->
-        <!--<property name="dataSource" ref="dataSource"></property>-->
-    <!--</bean>-->
+    <bean id="JdbcPreparedDishesDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcPreparedDishesDao">
+        <constructor-arg name="databaseController" ref="dataBaseController"/>
+    </bean>
 
-    <!--<bean id="JdbcStoreDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcStoreDao">-->
-        <!--<property name="dataSource" ref="dataSource"></property>-->
-    <!--</bean>-->
+    <bean id="JdbcStoreDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcStoreDao">
+        <constructor-arg name="databaseController" ref="dataBaseController"/>
+    </bean>
 
     <bean id="JdbcDatabaseDao" class="ua.com.tervola.jdbc.model.jdbc.JdbcDatabaseDao">
         <property ref="dataSource" name="dataSource"></property>
@@ -98,21 +101,21 @@
         <!--<constructor-arg index="1" ref="dataSource"/>-->
     </bean>
 
-    <!--<bean class="ua.com.tervola.jdbc.controller.OrderController" id="orderController">-->
-        <!--<property name="orderDao" ref="JdbcOrderDao"/>-->
-    <!--</bean>-->
+    <bean class="ua.com.tervola.jdbc.controller.OrderController" id="orderController">
+        <constructor-arg index="0" ref="JdbcOrderDao"/>
+    </bean>
 
-    <!--<bean class="ua.com.tervola.jdbc.controller.PreparedDishesController" id="preparedDishesController">-->
-        <!--<property name="preparedDishesDao" ref="JdbcPreparedDishesDao"/>-->
-    <!--</bean>-->
+    <bean class="ua.com.tervola.jdbc.controller.PreparedDishesController" id="preparedDishesController">
+        <constructor-arg index="0" ref="JdbcPreparedDishesDao"/>
+    </bean>
 
-    <!--<bean class="ua.com.tervola.jdbc.controller.StoreDaoController" id="storeDaoController">-->
-        <!--<property name="storeDao" ref="JdbcStoreDao"/>-->
-    <!--</bean>-->
+    <bean class="ua.com.tervola.jdbc.controller.StoreController" id="storeController">
+        <constructor-arg index="0" ref="JdbcStoreDao"/>
+    </bean>
 
     <bean class="ua.com.tervola.jdbc.controller.DatabaseController" id="dataBaseController">
         <constructor-arg index="0" ref="JdbcDatabaseDao"/>
-        <constructor-arg index="1" ref="dataSource"/>
+        <!--<constructor-arg index="1" ref="dataSource"/>-->
     </bean>
 
     <!--End Controllers-->

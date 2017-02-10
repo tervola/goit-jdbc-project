@@ -20,6 +20,8 @@ public class AbstractJdbcTablesDao {
     private static Logger LOGGER = LogManager.getLogger(AbstractJdbcTablesDao.class);
 
     private DatabaseController databaseController;
+    protected static String CONDITION_GT = ">=";
+    protected static String CONDITION_EQ = "=";
 
     public AbstractJdbcTablesDao(DatabaseController databaseController) {
         this.databaseController = databaseController;
@@ -50,9 +52,9 @@ public class AbstractJdbcTablesDao {
     }
 
     @Transactional
-    protected ResultSet findInTable(String fieldName, String tableName, String idField) {
+    protected ResultSet findInTable(String fieldName, String tableName, String idField, String condition) {
         try {
-            String sqlCommand = String.format("SELECT * FROM %s WHERE %s = %s", tableName, fieldName, idField);
+            String sqlCommand = String.format("SELECT * FROM public.%s WHERE %s %s %s", tableName, fieldName,condition,idField);
 
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand);

@@ -32,7 +32,6 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
         super(databaseController);
     }
 
-
     @Override
     public List<Employee> findAll() {
         List<Employee> result = new ArrayList<>();
@@ -52,7 +51,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     @Override
     public Employee findById(int id) {
         try {
-            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_EMPLOYEE, FIELD_EMPLOYEE_ID);
+            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_EMPLOYEE, FIELD_EMPLOYEE_ID, CONDITION_EQ);
             if (resultSet.next()) {
                 return createEmployee(resultSet);
             } else {
@@ -68,7 +67,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     @Override
     public Employee findByName(String employeeName) {
         try {
-            ResultSet resultSet = findInTable(employeeName, TABLE_EMPLOYEE, FIELD_NAME);
+            ResultSet resultSet = findInTable(employeeName, TABLE_EMPLOYEE, FIELD_NAME, CONDITION_EQ);
             if (resultSet.next()) {
                 return createEmployee(resultSet);
             } else {

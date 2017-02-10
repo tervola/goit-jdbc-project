@@ -9,13 +9,12 @@ public interface OrderDao {
 
     void createOrder(Order order);
 
-    void closeOrder(int order_id);
+    boolean closeOrder(int order_id);
 
-    void updateOpenedOrder(int order_id);
+    boolean updateOpenedOrder(String operation, int order_id, int dish_id);
 
-    void removeOpenedOrder(int order_id);
+    boolean removeOpenedOrder(int order_id);
 
-    List<Order> findOpenedOrders();
+    List<Order> findOrders(boolean closed);
 
-    List<Order> findClosedOrders();
 }

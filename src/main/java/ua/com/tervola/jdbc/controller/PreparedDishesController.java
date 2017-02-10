@@ -1,8 +1,8 @@
 package ua.com.tervola.jdbc.controller;
 
-import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.PreparedDishes;
 import ua.com.tervola.jdbc.model.PreparedDishesDao;
+import ua.com.tervola.jdbc.model.jdbc.JdbcPreparedDishesDao;
 
 import java.util.List;
 
@@ -13,15 +13,15 @@ public class PreparedDishesController {
 
     private PreparedDishesDao preparedDishesDao;
 
-    public void setPreparedDishesDao(PreparedDishesDao preparedDishesDao) {
-        this.preparedDishesDao = preparedDishesDao;
+    public PreparedDishesController(JdbcPreparedDishesDao jdbcPreparedDishesDao) {
+        this.preparedDishesDao = jdbcPreparedDishesDao;
     }
 
-    void addPreparedDish(String dish_name){
-        this.preparedDishesDao.addPreparedDish(dish_name);
+    public void addPreparedDish(PreparedDishes preparedDishes){
+        this.preparedDishesDao.addPreparedDish(preparedDishes);
     }
 
-    List<PreparedDishes> findAllDishes(){
-        return this.preparedDishesDao.findAllDishes();
+    public List<PreparedDishes> findAllPreparedDishes(){
+        return this.preparedDishesDao.findAllPreparedDishes();
     }
 }

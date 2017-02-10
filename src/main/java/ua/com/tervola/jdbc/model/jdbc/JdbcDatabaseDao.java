@@ -3,6 +3,7 @@ package ua.com.tervola.jdbc.model.jdbc;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.Employee;
 
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by user on 11/18/2016.
  */
+@Component
 public class JdbcDatabaseDao implements DatabaseDao {
 
     private static Logger LOGGER = LogManager.getLogger(JdbcDatabaseDao.class);

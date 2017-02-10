@@ -6,7 +6,7 @@ import java.util.List;
  * Created by user on 1/28/2017.
  */
 public interface PreparedDishesDao {
-    void addPreparedDish(String dish_name);
+    void addPreparedDish(PreparedDishes preparedDishes);
 
-    List<PreparedDishes> findAllDishes();
+    List<PreparedDishes> findAllPreparedDishes();
 }

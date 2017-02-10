@@ -62,7 +62,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
     @Override
     public Dish findDishByName(String name) {
         try {
-            ResultSet resultSet = findInTable(name, TABLE_DISH, FIELD_TITLE);
+            ResultSet resultSet = findInTable(name, TABLE_DISH, FIELD_TITLE, CONDITION_EQ);
             if (resultSet.next()){
                 return createDish(resultSet);
             } else {
@@ -98,7 +98,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
     @Override
     public Dish findDishById(int id) {
         try {
-            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_DISH, FIELD_DISH_ID );
+            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_DISH, FIELD_DISH_ID, CONDITION_EQ );
             if (resultSet.next()){
                 return createDish(resultSet);
             } else {

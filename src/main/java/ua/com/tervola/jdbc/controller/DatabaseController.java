@@ -2,6 +2,7 @@ package ua.com.tervola.jdbc.controller;
 
 import com.mchange.v2.c3p0.AbstractComboPooledDataSource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.stereotype.Component;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 
 import java.sql.Connection;
@@ -11,25 +12,24 @@ import java.util.List;
 /**
  * Created by user on 11/20/2016.
  */
+@Component
 public class DatabaseController {
 
     private DatabaseDao databaseDao;
-    private ComboPooledDataSource dataSource;
 
-    public DatabaseController(DatabaseDao databaseDao, ComboPooledDataSource dataSource) {
+    public DatabaseController(DatabaseDao databaseDao) {
         this.databaseDao = databaseDao;
-        this.dataSource = dataSource;
     }
 
     public List<String> getAllTables() throws SQLException {
-        return databaseDao.getAllTables();
+        return this.databaseDao.getAllTables();
     }
 
     public Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        return this.databaseDao.getDataSource().getConnection();
     }
 
     public ComboPooledDataSource getManager() {
-        return this.dataSource;
+        return this.databaseDao.getDataSource();
     }
 }

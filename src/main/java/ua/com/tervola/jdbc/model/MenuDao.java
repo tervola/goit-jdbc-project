@@ -8,7 +8,7 @@ import java.util.List;
 public interface MenuDao {
     void createNewMenu(ProjectMenu menu);
     void removeMenu(int id);
-    boolean modifyMenu(int id, ProjectMenu projectMenu);
+    boolean modifyMenu(ProjectMenu projectMenu);
     ProjectMenu findMenuByName(String menuName);
     ProjectMenu findMenuById(int id);
     List<ProjectMenu> findAllMenu();

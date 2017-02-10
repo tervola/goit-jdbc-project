@@ -60,15 +60,15 @@ public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
     }
 
     @Override
-    public boolean modifyMenu(int id, ProjectMenu projectMenu) {
-        String dataSet = String.format("%s = %s", FIELD_NAME, projectMenu.getMenuName(), FIELD_ID);
-        return updateTable(id, TABLE_MENU, dataSet, FIELD_ID);
+    public boolean modifyMenu(ProjectMenu projectMenu) {
+        String dataSet = String.format("%s = %s", FIELD_NAME, projectMenu.getMenuName());
+        return updateTable(projectMenu.getMenu_id(), TABLE_MENU, dataSet, FIELD_ID);
     }
 
     @Override
     public ProjectMenu findMenuByName(String menuName) {
         try {
-            ResultSet resultSet = findInTable(menuName, TABLE_MENU, FIELD_NAME);
+            ResultSet resultSet = findInTable(menuName, TABLE_MENU, FIELD_NAME, CONDITION_EQ);
             if (resultSet.next()) {
                 return createProjectMenu(resultSet);
             } else {
@@ -86,7 +86,7 @@ public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
     @Override
     public ProjectMenu findMenuById(int id) {
         try {
-            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_MENU, FIELD_ID);
+            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_MENU, FIELD_ID, CONDITION_EQ);
             if (resultSet.next()) {
                 return createProjectMenu(resultSet);
             } else {

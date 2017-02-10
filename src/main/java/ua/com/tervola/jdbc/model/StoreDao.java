@@ -6,13 +6,13 @@ import java.util.List;
  * Created by user on 1/28/2017.
  */
 public interface StoreDao {
-    void addNewIngridients(int ingridients_id, int amount);
+    void addNewIngridients(Ingridient ingridient);
 
     void removeIngridients(int ingridients_id);
 
-    void updateIngridients(int ingridients_id, int amount);
+    boolean updateIngridients(Ingridient ingridient);
 
-    void findIngridientByName(String Name);
+    Ingridient findIngridientByName(String Name);
 
     List<Ingridient> findAllIngridients();
 

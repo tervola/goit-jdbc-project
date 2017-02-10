@@ -1,5 +1,6 @@
 package ua.com.tervola.jdbc.controller;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.Dish;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by user on 1/28/2017.
  */
+@Component
 public class DishController {
 
     private DishDao dishDao;

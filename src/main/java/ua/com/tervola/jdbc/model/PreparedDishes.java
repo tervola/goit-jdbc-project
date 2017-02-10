@@ -8,11 +8,19 @@ public class PreparedDishes {
     int dishId;
     String title;
     int employeeId;
-    String dish;
+    int orderId;
     String date;
 
     public int getDishId() {
         return dishId;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public void setDishId(int dishId) {
@@ -35,19 +43,22 @@ public class PreparedDishes {
         this.employeeId = employeeId;
     }
 
-    public String getDish() {
-        return dish;
-    }
-
-    public void setDish(String dish) {
-        this.dish = dish;
-    }
-
     public String getDate() {
         return date;
     }
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "PreparedDishes{" +
+                "dishId=" + dishId +
+                ", title='" + title + '\'' +
+                ", employeeId=" + employeeId +
+                ", orderId='" + orderId + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }

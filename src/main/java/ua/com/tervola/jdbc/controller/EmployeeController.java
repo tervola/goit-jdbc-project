@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by user on 11/7/2016.
  */
+@Component
 public class EmployeeController {
 
     private PlatformTransactionManager txManager;
@@ -40,11 +41,11 @@ public class EmployeeController {
         return employeeDao.findByName(name);
     }
 
-    void addEmployee(Employee employee){
+    public void addEmployee(Employee employee){
         employeeDao.addEmployee(employee);
     }
 
-    void removeEmployee(int employee_id) throws SQLException {
+    public void removeEmployee(int employee_id) throws SQLException {
         employeeDao.removeEmployee(employee_id);
     }
 
