@@ -13,7 +13,7 @@ public class PreparedDishesController {
 
     private PreparedDishesDao preparedDishesDao;
 
-    public PreparedDishesController(JdbcPreparedDishesDao jdbcPreparedDishesDao) {
+    public PreparedDishesController(PreparedDishesDao jdbcPreparedDishesDao) {
         this.preparedDishesDao = jdbcPreparedDishesDao;
     }
 

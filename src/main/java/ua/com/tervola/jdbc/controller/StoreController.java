@@ -15,7 +15,7 @@ public class StoreController {
 
     private StoreDao storeDao;
 
-    public StoreController(JdbcStoreDao jdbcStoreDao) {
+    public StoreController(StoreDao jdbcStoreDao) {
         this.storeDao = jdbcStoreDao;
     }
 
