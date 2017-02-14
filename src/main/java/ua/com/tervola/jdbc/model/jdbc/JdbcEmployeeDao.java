@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.Employee;
 import ua.com.tervola.jdbc.model.EmployeeDao;
+import ua.com.tervola.jdbc.model.ProjectTables;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import java.util.List;
 public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDao {
 
     private static Logger LOGGER = LogManager.getLogger(JdbcEmployeeDao.class);
-    private static String TABLE_EMPLOYEE = "employee";
     private static String FIELD_EMPLOYEE_ID = "employee_id";
     private static String FIELD_SURNAME = "surname";
     private static String FIELD_NAME = "name";
@@ -36,7 +36,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     public List<Employee> findAll() {
         List<Employee> result = new ArrayList<>();
         try {
-            ResultSet resultSet = findIntabledAllRecords(TABLE_EMPLOYEE);
+            ResultSet resultSet = findIntabledAllRecords(ProjectTables.EMPLOYEE);
             while (resultSet.next()) {
                 Employee employee = createEmployee(resultSet);
                 result.add(employee);
@@ -51,7 +51,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     @Override
     public Employee findById(int id) {
         try {
-            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_EMPLOYEE, FIELD_EMPLOYEE_ID, CONDITION_EQ);
+            ResultSet resultSet = findInTable(String.valueOf(id), ProjectTables.EMPLOYEE, FIELD_EMPLOYEE_ID, CONDITION_EQ);
             if (resultSet.next()) {
                 return createEmployee(resultSet);
             } else {
@@ -67,7 +67,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     @Override
     public Employee findByName(String employeeName) {
         try {
-            ResultSet resultSet = findInTable(employeeName, TABLE_EMPLOYEE, FIELD_NAME, CONDITION_EQ);
+            ResultSet resultSet = findInTable(employeeName, ProjectTables.EMPLOYEE, FIELD_NAME, CONDITION_EQ);
             if (resultSet.next()) {
                 return createEmployee(resultSet);
             } else {
@@ -87,7 +87,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
             Connection connection = getDatabaseController().getConnection();
             StringBuilder sqlCommand = new StringBuilder();
             sqlCommand.append(String.format("INSERT INTO %s (%s,%s,%s,%s,%s,%s )",
-                    TABLE_EMPLOYEE,
+                    ProjectTables.EMPLOYEE,
                     FIELD_EMPLOYEE_ID,
                     FIELD_SURNAME,
                     FIELD_NAME,
@@ -117,7 +117,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     }
 
     private List<Integer> getIndexes() throws SQLException {
-        return getIndexesFromTable(FIELD_EMPLOYEE_ID, TABLE_EMPLOYEE);
+        return getIndexesFromTable(FIELD_EMPLOYEE_ID, ProjectTables.EMPLOYEE);
     }
 
     private Employee createEmployee(ResultSet resultSet) throws SQLException {
@@ -135,7 +135,7 @@ public class JdbcEmployeeDao extends AbstractJdbcTablesDao implements EmployeeDa
     @Override
 //    @Transactional
     public void removeEmployee(int employee_id) throws SQLException {
-        removeFromTable(employee_id, TABLE_EMPLOYEE, FIELD_EMPLOYEE_ID);
+        removeFromTable(employee_id, ProjectTables.EMPLOYEE, FIELD_EMPLOYEE_ID);
     }
 
 }

@@ -6,11 +6,9 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.Employee;
+import ua.com.tervola.jdbc.model.ProjectTables;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +19,11 @@ import java.util.List;
 public class JdbcDatabaseDao implements DatabaseDao {
 
     private static Logger LOGGER = LogManager.getLogger(JdbcDatabaseDao.class);
+
+    private static String FIELD_TABLE_SCHEMA = "table_schema";
+    private static String FIELD_TABLE_NAME = "table_name";
+    private static String FIELD_CONDITION = "public";
+
     private ComboPooledDataSource dataSource;
 
     @Override
@@ -40,7 +43,12 @@ public class JdbcDatabaseDao implements DatabaseDao {
         try {
             connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';");
+            String sqlCommand = String.format("SELECT %s FROM %s WHERE %s = '%s'",
+                    FIELD_TABLE_NAME,
+                    ProjectTables.SYSTEM_TABLE_INFORMATION_SCHEMA,
+                    FIELD_TABLE_SCHEMA,
+                    FIELD_CONDITION);
+            ResultSet resultSet = statement.executeQuery(sqlCommand);
             while(resultSet.next()){
                 result.add(resultSet.getString("table_name"));
             }

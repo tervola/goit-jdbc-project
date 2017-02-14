@@ -17,11 +17,11 @@ import java.util.List;
 @Component
 public class EmployeeController {
 
-    private PlatformTransactionManager txManager;
+//    private PlatformTransactionManager txManager;
     private EmployeeDao employeeDao;
 
-    public EmployeeController(PlatformTransactionManager txManager, EmployeeDao employeeDao) {
-        this.txManager = txManager;
+    public EmployeeController(EmployeeDao employeeDao) {
+//        this.txManager = txManager;
         this.employeeDao = employeeDao;
     }
 

@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.Order;
 import ua.com.tervola.jdbc.model.OrderDao;
+import ua.com.tervola.jdbc.model.ProjectTables;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,7 +21,6 @@ public class JdbcOrderDao extends AbstractJdbcTablesDao implements OrderDao {
 
     private static Logger LOGGER = LogManager.getLogger(JdbcOrderDao.class);
 
-    private static String TABLE_ORDER = "order";
     private static String TABLE_CONCATEENATE_ORDER_DISH = "concatenate_order_dish";
     private static String FIELD_ORDER_ID = "order_id";
     private static String FIELD_DISH_ID = "dish_id";
@@ -43,7 +43,7 @@ public class JdbcOrderDao extends AbstractJdbcTablesDao implements OrderDao {
     public void createOrder(Order order) {
         try {
             StringBuilder sqlCommand = new StringBuilder();
-            sqlCommand.append(String.format("INSERT INTO %s (%s,%s,%s,%s)", TABLE_ORDER, FIELD_ORDER_ID, FIELD_EMPLOYEE, FIELD_TABLE_NUMBER, FIELD_DATE));
+            sqlCommand.append(String.format("INSERT INTO %s (%s,%s,%s,%s)", ProjectTables.ORDER, FIELD_ORDER_ID, FIELD_EMPLOYEE, FIELD_TABLE_NUMBER, FIELD_DATE));
             sqlCommand.append("VALUES (?,?,?,?)");
 
             PreparedStatement preparedStatement = getDatabaseController().getConnection().prepareStatement(sqlCommand.toString());
@@ -56,7 +56,7 @@ public class JdbcOrderDao extends AbstractJdbcTablesDao implements OrderDao {
             preparedStatement.close();
 
         } catch (SQLException e) {
-            LOGGER.error(String.format("Error, while updating %s table", TABLE_ORDER));
+            LOGGER.error(String.format("Error, while updating %s table", ProjectTables.ORDER));
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -74,7 +74,7 @@ public class JdbcOrderDao extends AbstractJdbcTablesDao implements OrderDao {
     @Override
     public boolean closeOrder(int order_id) {
         String dataSet = String.format("%s = %s", FIELD_CLOSED, TRUE);
-        return updateTable(order_id, TABLE_ORDER, dataSet, FIELD_CLOSED);
+        return updateTable(order_id, ProjectTables.ORDER, dataSet, FIELD_CLOSED);
     }
 
     @Override
@@ -117,17 +117,17 @@ public class JdbcOrderDao extends AbstractJdbcTablesDao implements OrderDao {
     public boolean removeOpenedOrder(int order_id) {
         boolean success = false;
         StringBuilder sqlCommand = new StringBuilder();
-        try{
+        try {
             sqlCommand.append(String.format("DELETE FROM %s WHERE %s = %s)", TABLE_CONCATEENATE_ORDER_DISH, FIELD_ORDER_ID, order_id));
             PreparedStatement preparedStatement = getDatabaseController().getConnection().prepareStatement(sqlCommand.toString());
             preparedStatement.executeUpdate();
             preparedStatement.close();
             success = true;
         } catch (SQLException e) {
-        LOGGER.error(String.format("Error, while removing from %s ", TABLE_CONCATEENATE_ORDER_DISH));
-        System.out.println(e.getMessage());
-        throw new RuntimeException(e);
-    }
+            LOGGER.error(String.format("Error, while removing from %s ", TABLE_CONCATEENATE_ORDER_DISH));
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
         return success;
     }
 
@@ -136,7 +136,7 @@ public class JdbcOrderDao extends AbstractJdbcTablesDao implements OrderDao {
         List<Order> result = new ArrayList<>();
 
         try {
-            ResultSet resultSet = findInTable(FIELD_CLOSED, TABLE_ORDER, String.valueOf(closed), CONDITION_EQ);
+            ResultSet resultSet = findInTable(FIELD_CLOSED, ProjectTables.ORDER, String.valueOf(closed), CONDITION_EQ);
             while (resultSet.next()) {
                 Order order = createOrder(resultSet);
                 result.add(order);

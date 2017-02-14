@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.Dish;
 import ua.com.tervola.jdbc.model.DishDao;
+import ua.com.tervola.jdbc.model.ProjectTables;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import java.util.List;
 public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
     private static Logger LOGGER = LogManager.getLogger(JdbcDishDao.class);
-    private static String TABLE_DISH = "dish";
     private static String FIELD_CATEGORY = "category";
     private static String FIELD_COST = "cost";
     private static String FIELD_WEIGHT = "weight";
@@ -48,7 +48,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
             preparedStatement.close();
 
         } catch (SQLException e){
-            LOGGER.error(String.format("Error, while updating %s table", TABLE_DISH));
+            LOGGER.error(String.format("Error, while updating %s table", ProjectTables.DISH));
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -56,13 +56,13 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
     @Override
     public void removeDish(int id) {
-        removeFromTable(id, TABLE_DISH, FIELD_DISH_ID);
+        removeFromTable(id, ProjectTables.DISH, FIELD_DISH_ID);
     }
 
     @Override
     public Dish findDishByName(String name) {
         try {
-            ResultSet resultSet = findInTable(name, TABLE_DISH, FIELD_TITLE, CONDITION_EQ);
+            ResultSet resultSet = findInTable(name, ProjectTables.DISH, FIELD_TITLE, CONDITION_EQ);
             if (resultSet.next()){
                 return createDish(resultSet);
             } else {
@@ -82,7 +82,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
         List<Dish> result = new ArrayList<>();
         try {
-            ResultSet resultSet = findIntabledAllRecords(TABLE_DISH);
+            ResultSet resultSet = findIntabledAllRecords(ProjectTables.DISH);
             while(resultSet.next()){
                 Dish dish = createDish(resultSet);
                 result.add(dish);
@@ -98,7 +98,7 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
     @Override
     public Dish findDishById(int id) {
         try {
-            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_DISH, FIELD_DISH_ID, CONDITION_EQ );
+            ResultSet resultSet = findInTable(String.valueOf(id), ProjectTables.DISH, FIELD_DISH_ID, CONDITION_EQ );
             if (resultSet.next()){
                 return createDish(resultSet);
             } else {
@@ -125,6 +125,6 @@ public class JdbcDishDao extends AbstractJdbcTablesDao implements DishDao{
 
     @Override
     public List<Integer> getIndexes() throws SQLException {
-        return getIndexesFromTable(FIELD_DISH_ID,TABLE_DISH);
+        return getIndexesFromTable(FIELD_DISH_ID,ProjectTables.DISH);
     }
 }

@@ -71,6 +71,12 @@ public class MainClass {
 
 
     private void start() throws ClassNotFoundException, SQLException {
+        LOGGER.info("prepared to call to Database from start");
+        System.out.println("Database:");
+        databaseController.getAllTables().forEach(System.out::println);
+        System.out.println("---------");
+        System.out.println(employeeController.findById(1));
+
         LOGGER.info("prepared to call to DAO from start");
         System.out.println("Employee:");
         employeeController.getAllEmployees().forEach(System.out::println);
@@ -107,6 +113,8 @@ public class MainClass {
         System.out.println("Storage");
         storeController.findAllIngridients().forEach(System.out::println);
         System.out.println("---------");
+
+        System.out.println("FINISH");
 
     }
 

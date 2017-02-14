@@ -1,12 +1,10 @@
 package ua.com.tervola.jdbc.model.jdbc;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.tervola.jdbc.controller.DatabaseController;
-import ua.com.tervola.jdbc.model.Dish;
+import ua.com.tervola.jdbc.model.ProjectTables;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class AbstractJdbcTablesDao {
     }
 
     @Transactional
-    protected void removeFromTable(int index, String tableName, String field) {
+    protected void removeFromTable(int index, ProjectTables tableName, String field) {
         try {
             String sqlCommand = String.format("DELETE FROM %s WHERE %s = %s", tableName, field, index);
 
@@ -52,7 +50,7 @@ public class AbstractJdbcTablesDao {
     }
 
     @Transactional
-    protected ResultSet findInTable(String fieldName, String tableName, String idField, String condition) {
+    protected ResultSet findInTable(String fieldName, ProjectTables tableName, String idField, String condition) {
         try {
             String sqlCommand = String.format("SELECT * FROM public.%s WHERE %s %s %s", tableName, fieldName,condition,idField);
 
@@ -67,7 +65,7 @@ public class AbstractJdbcTablesDao {
     }
 
     @Transactional
-    protected ResultSet findIntabledAllRecords(String tableName) {
+    protected ResultSet findIntabledAllRecords(ProjectTables tableName) {
 
         try {
             Statement statement = getConnection().createStatement();
@@ -80,7 +78,7 @@ public class AbstractJdbcTablesDao {
     }
 
     @Transactional
-    public List<Integer> getIndexesFromTable(String field, String table) throws SQLException {
+    public List<Integer> getIndexesFromTable(String field, ProjectTables table) throws SQLException {
         List<Integer> result = new ArrayList<>();
         try {
             Statement statement = getConnection().createStatement();
@@ -100,7 +98,7 @@ public class AbstractJdbcTablesDao {
     }
 
     @Transactional
-    protected boolean updateTable(int id, String tableName, String dataSet, String fieldId) {
+    protected boolean updateTable(int id, ProjectTables tableName, String dataSet, String fieldId) {
         boolean success = false;
         try {
             Statement statement = getConnection().createStatement();

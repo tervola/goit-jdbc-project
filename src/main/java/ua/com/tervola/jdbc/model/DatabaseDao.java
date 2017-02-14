@@ -15,4 +15,6 @@ public interface DatabaseDao {
     List<String> getAllTables() throws SQLException;
 
     ComboPooledDataSource getDataSource();
+
+    void setDataSource(ComboPooledDataSource dataSource);
 }

@@ -87,7 +87,7 @@
 
     <!--Controllers-->
     <bean class="ua.com.tervola.jdbc.controller.EmployeeController" id="employeeController">
-        <constructor-arg index="0" ref="txManager"/>
+        <!--<constructor-arg index="0" ref="txManager"/>-->
         <constructor-arg index="1" ref="JdbcEmployeeDao"/>
     </bean>
 

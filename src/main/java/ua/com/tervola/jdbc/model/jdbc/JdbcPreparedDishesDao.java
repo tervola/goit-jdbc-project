@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.PreparedDishes;
 import ua.com.tervola.jdbc.model.PreparedDishesDao;
+import ua.com.tervola.jdbc.model.ProjectTables;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,7 +21,6 @@ public class JdbcPreparedDishesDao extends AbstractJdbcTablesDao implements Prep
 
     private static Logger LOGGER = LogManager.getLogger(JdbcPreparedDishesDao.class);
 
-    private static String TABLE_PREPARED_DISHES = "prepared_dishes";
     private static String FIELD_DISH_ID = "dish_id";
     private static String FIELD_TITLE = "title";
     private static String FIELD_EMPLOYEE_ID = "employee_id";
@@ -37,7 +37,7 @@ public class JdbcPreparedDishesDao extends AbstractJdbcTablesDao implements Prep
         try {
             StringBuilder sqlCommand = new StringBuilder();
             sqlCommand.append(String.format("INSERT INTO %s (%s,%s,%s,%s,%s)",
-                    TABLE_PREPARED_DISHES,
+                    ProjectTables.PREPARED_DISHES,
                     FIELD_DISH_ID,
                     FIELD_TITLE,
                     FIELD_EMPLOYEE_ID,
@@ -56,7 +56,7 @@ public class JdbcPreparedDishesDao extends AbstractJdbcTablesDao implements Prep
             preparedStatement.close();
 
         } catch (SQLException e) {
-            LOGGER.error(String.format("Error, while updating %s table", TABLE_PREPARED_DISHES));
+            LOGGER.error(String.format("Error, while updating %s table", ProjectTables.PREPARED_DISHES));
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -67,7 +67,7 @@ public class JdbcPreparedDishesDao extends AbstractJdbcTablesDao implements Prep
 
         List<PreparedDishes> result = new ArrayList<>();
         try {
-            ResultSet resultSet = findIntabledAllRecords(TABLE_PREPARED_DISHES);
+            ResultSet resultSet = findIntabledAllRecords(ProjectTables.PREPARED_DISHES);
             while (resultSet.next()) {
                 PreparedDishes preparedDishes = createPreparedDishes(resultSet);
                 result.add(preparedDishes);

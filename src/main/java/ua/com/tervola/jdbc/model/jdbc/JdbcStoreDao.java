@@ -4,6 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.Ingridient;
+import ua.com.tervola.jdbc.model.ProjectTables;
 import ua.com.tervola.jdbc.model.StoreDao;
 
 import java.sql.Date;
@@ -19,7 +20,6 @@ import java.util.List;
 public class JdbcStoreDao extends AbstractJdbcTablesDao implements StoreDao {
 
     private static Logger LOGGER = LogManager.getLogger(JdbcStoreDao.class);
-    private static String TABLE_STORAGE = "storage";
     private static String FIELD_ID = "idgridient_id";
     private static String FIELD_AMOUNT = "amount";
 
@@ -32,7 +32,7 @@ public class JdbcStoreDao extends AbstractJdbcTablesDao implements StoreDao {
         try {
             StringBuilder sqlCommand = new StringBuilder();
             sqlCommand.append(String.format("INSERT INTO %s (%s,%s,%s,%s,%s)",
-                    TABLE_STORAGE,
+                    ProjectTables.STORAGE,
                     FIELD_ID,
                     FIELD_AMOUNT));
             sqlCommand.append("VALUES (?,?,?)");
@@ -45,7 +45,7 @@ public class JdbcStoreDao extends AbstractJdbcTablesDao implements StoreDao {
             preparedStatement.close();
 
         } catch (SQLException e) {
-            LOGGER.error(String.format("Error, while updating %s table", TABLE_STORAGE));
+            LOGGER.error(String.format("Error, while updating %s table", ProjectTables.STORAGE));
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -53,20 +53,20 @@ public class JdbcStoreDao extends AbstractJdbcTablesDao implements StoreDao {
 
     @Override
     public void removeIngridients(int ingridients_id) {
-        removeFromTable(ingridients_id, TABLE_STORAGE, FIELD_ID);
+        removeFromTable(ingridients_id, ProjectTables.STORAGE, FIELD_ID);
     }
 
     @Override
     public boolean updateIngridients(Ingridient ingridient) {
         String dataSet = String.format("%s = %s", FIELD_AMOUNT, ingridient.getIngridientAmount());
-        return updateTable(ingridient.getIngridient_id(), TABLE_STORAGE, dataSet, FIELD_ID);
+        return updateTable(ingridient.getIngridient_id(), ProjectTables.STORAGE, dataSet, FIELD_ID);
     }
 
     @Override
     public Ingridient findIngridientByName(String name) {
         try {
             //"SELECT * FROM public.%s WHERE %s = %s
-            ResultSet resultSet = findInTable(name, TABLE_STORAGE, FIELD_ID, CONDITION_EQ);
+            ResultSet resultSet = findInTable(name, ProjectTables.STORAGE, FIELD_ID, CONDITION_EQ);
             if (resultSet.next()) {
                 return createIngridient(resultSet);
             } else {
@@ -84,7 +84,7 @@ public class JdbcStoreDao extends AbstractJdbcTablesDao implements StoreDao {
 
         List<Ingridient> result = new ArrayList<>();
         try {
-            ResultSet resultSet = findIntabledAllRecords(TABLE_STORAGE);
+            ResultSet resultSet = findIntabledAllRecords(ProjectTables.STORAGE);
             while (resultSet.next()) {
                 Ingridient ingridient = createIngridient(resultSet);
                 result.add(ingridient);
@@ -108,7 +108,7 @@ public class JdbcStoreDao extends AbstractJdbcTablesDao implements StoreDao {
     public List<Ingridient> findAllIngridientsByAmount(int amount) {
         List<Ingridient> result = new ArrayList<>();
         try {
-            ResultSet resultSet = findInTable(TABLE_STORAGE, FIELD_AMOUNT, String.valueOf(amount), CONDITION_GT);
+            ResultSet resultSet = findInTable(FIELD_AMOUNT, ProjectTables.STORAGE, String.valueOf(amount), CONDITION_GT);
             if (resultSet.next()) {
                 result.add(createIngridient(resultSet));
             } else {

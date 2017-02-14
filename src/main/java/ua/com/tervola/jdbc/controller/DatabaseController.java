@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by user on 11/20/2016.
  */
-@Component
+
 public class DatabaseController {
 
     private DatabaseDao databaseDao;

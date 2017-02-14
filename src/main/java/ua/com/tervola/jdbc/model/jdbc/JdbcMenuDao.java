@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.MenuDao;
 import ua.com.tervola.jdbc.model.ProjectMenu;
+import ua.com.tervola.jdbc.model.ProjectTables;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,6 @@ import java.util.List;
 public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
     private static Logger LOGGER = LogManager.getLogger(JdbcMenuDao.class);
 
-    private static String TABLE_MENU = "menu";
     private static String FIELD_ID = "menu_id";
     private static String FIELD_NAME = "menu_name";
 
@@ -30,7 +30,7 @@ public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
     public void createNewMenu(ProjectMenu menu) {
         try {
             StringBuilder sqlCommand = new StringBuilder();
-            sqlCommand.append(String.format("INSERT INTO %s (%s,%s )", TABLE_MENU, FIELD_ID, FIELD_NAME));
+            sqlCommand.append(String.format("INSERT INTO %s (%s,%s )", ProjectTables.MENU, FIELD_ID, FIELD_NAME));
             sqlCommand.append("VALUES (?,?)");
 
             PreparedStatement preparedStatement = getDatabaseController().getConnection().prepareStatement(sqlCommand.toString());
@@ -41,7 +41,7 @@ public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
             preparedStatement.close();
 
         } catch (SQLException e) {
-            LOGGER.error(String.format("Error, while updating %s table", TABLE_MENU));
+            LOGGER.error(String.format("Error, while updating %s table", ProjectTables.MENU));
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -56,19 +56,19 @@ public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
 
     @Override
     public void removeMenu(int id) {
-        removeFromTable(id, TABLE_MENU, FIELD_ID);
+        removeFromTable(id, ProjectTables.MENU, FIELD_ID);
     }
 
     @Override
     public boolean modifyMenu(ProjectMenu projectMenu) {
         String dataSet = String.format("%s = %s", FIELD_NAME, projectMenu.getMenuName());
-        return updateTable(projectMenu.getMenu_id(), TABLE_MENU, dataSet, FIELD_ID);
+        return updateTable(projectMenu.getMenu_id(), ProjectTables.MENU, dataSet, FIELD_ID);
     }
 
     @Override
     public ProjectMenu findMenuByName(String menuName) {
         try {
-            ResultSet resultSet = findInTable(menuName, TABLE_MENU, FIELD_NAME, CONDITION_EQ);
+            ResultSet resultSet = findInTable(menuName, ProjectTables.MENU, FIELD_NAME, CONDITION_EQ);
             if (resultSet.next()) {
                 return createProjectMenu(resultSet);
             } else {
@@ -86,7 +86,7 @@ public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
     @Override
     public ProjectMenu findMenuById(int id) {
         try {
-            ResultSet resultSet = findInTable(String.valueOf(id), TABLE_MENU, FIELD_ID, CONDITION_EQ);
+            ResultSet resultSet = findInTable(String.valueOf(id), ProjectTables.MENU, FIELD_ID, CONDITION_EQ);
             if (resultSet.next()) {
                 return createProjectMenu(resultSet);
             } else {
@@ -105,7 +105,7 @@ public class JdbcMenuDao extends AbstractJdbcTablesDao implements MenuDao {
     public List<ProjectMenu> findAllMenu() {
         List<ProjectMenu> result = new ArrayList<>();
         try {
-            ResultSet resultSet = findIntabledAllRecords(TABLE_MENU);
+            ResultSet resultSet = findIntabledAllRecords(ProjectTables.MENU);
             while (resultSet.next()) {
                 ProjectMenu projectMenu = createProjectMenu(resultSet);
                 result.add(projectMenu);
