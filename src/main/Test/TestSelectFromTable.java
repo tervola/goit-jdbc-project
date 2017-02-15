@@ -150,11 +150,56 @@ public class TestSelectFromTable extends Assert {
         } else {
             System.out.println(String.format("Table %s is empty",ProjectTables.DISH));
         }
-//        this.menuController.findAllMenu().forEach(System.out::println);
-//        this.orderController.findOpenedOrders().forEach(System.out::println);
-//        this.orderController.findClosedOrders().forEach(System.out::println);
-//        this.preparedDishesController.findAllPreparedDishes().forEach(System.out::println);
-//        this.storeController.findAllIngridients().forEach(System.out::println);
+
+        List<ProjectMenu> allMenu = this.menuController.findAllMenu();
+        if (allMenu.size() > 0) {
+            ProjectMenu menu = allMenu.get(0);
+            assertNotNull(menu.getMenu_id());
+            assertNotNull(menu.getMenuName());
+        } else {
+            System.out.println(String.format("Table %s is empty",ProjectTables.MENU));
+        }
+
+        List<Order> openedOrders = this.orderController.findOpenedOrders();
+        if(openedOrders.size() > 0) {
+            Order order = openedOrders.get(0);
+            assertNotNull(order.getDate());
+            assertNotNull(order.getEmployee_id());
+            assertNotNull(order.getOrder_id());
+            assertNotNull(order.getTebleNumber());
+        } else {
+            System.out.println(String.format("Table %s has no any opened order",ProjectTables.ORDER));
+        }
+
+        List<Order> closedOrders = this.orderController.findClosedOrders();
+        if(closedOrders.size() > 0) {
+            Order order = openedOrders.get(0);
+            assertNotNull(order.getDate());
+            assertNotNull(order.getEmployee_id());
+            assertNotNull(order.getOrder_id());
+            assertNotNull(order.getTebleNumber());
+        } else {
+            System.out.println(String.format("Table %s has no any closed order",ProjectTables.ORDER));
+        }
+        List<PreparedDishes> allPreparedDishes = this.preparedDishesController.findAllPreparedDishes();
+        if (allPreparedDishes.size() > 0) {
+            PreparedDishes preparedDishes = allPreparedDishes.get(0);
+            assertNotNull(preparedDishes.getDate());
+            assertNotNull(preparedDishes.getTitle());
+            assertNotNull(preparedDishes.getDishId());
+            assertNotNull(preparedDishes.getEmployeeId());
+            assertNotNull(preparedDishes.getOrderId());
+        } else {
+            System.out.println(String.format("Table %s has no any prepared dishes",ProjectTables.PREPARED_DISHES));
+        }
+
+        List<Ingridient> allIngridients = this.storeController.findAllIngridients();
+        if (allIngridients.size() > 0) {
+            Ingridient ingridient = allIngridients.get(0);
+            assertNotNull(ingridient.getIngridient_id());
+            assertNotNull(ingridient.getIngridientAmount());
+        }
+
 
     }
 
