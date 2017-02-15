@@ -2,6 +2,7 @@ package ua.com.tervola.jdbc.consolepart;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import ua.com.tervola.jdbc.MainMenu;
 
 import java.util.List;
 
@@ -22,23 +23,18 @@ public class ConsolePrinter {
     private static String MAIN_INPUT = "\nChose action you want (type exit or quit for finish):\n";
 
 
-    public void print(String s){
+    public void print(String s) {
         System.out.println(s);
     }
 
-    public void print(int number){
+    public void print(int number) {
         print(String.valueOf(number));
     }
 
-    public void printHead(List<String> mainMenu) {
+    public void printHead(List<MainMenu> mainMenu) {
         print(TEXT_HEAD);
         print(MAIN_INPUT);
-        int index = 1;
-        for (String s : mainMenu) {
-            String line = String.format("%s. %s",index,s );
-            print(line);
-            index++;
-        }
+        printMainmenu(mainMenu);
     }
 
     public void printGoodBuy() {
@@ -49,7 +45,7 @@ public class ConsolePrinter {
         print(TEXT_WRONG_INPUT);
     }
 
-    public void print(List<String> list){
+    public void print(List<String> list) {
         print(TEXT_START_RESULT);
         for (String s : list) {
             print(s);
@@ -58,11 +54,11 @@ public class ConsolePrinter {
         print(TEXT_END_RESULT);
     }
 
-    public void printMainmenu(List<String> mainMenu) {
+    public void printMainmenu(List<MainMenu> mainMenu) {
         print(MAIN_INPUT);
         int index = 1;
-        for (String s : mainMenu) {
-            String line = String.format("%s. %s",index,s );
+        for (MainMenu item : mainMenu) {
+            String line = String.format("%s. %s", index, item);
             print(line);
             index++;
         }

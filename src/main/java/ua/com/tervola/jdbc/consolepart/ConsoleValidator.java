@@ -8,24 +8,29 @@ public class ConsoleValidator {
     private static String COMMAND_QUIT = "quit";
     private static String TEXT_EMPTY = "";
 
+    private static int INPUT_ENTER = -1;
+    private static int INPUT_EXIT = -2;
+    private static int INPUT_WRONG_FORMAT = -3;
+
     public int validateInput(String inputText) {
 
         if (inputText.trim().equals(TEXT_EMPTY)) {
-            return -2;
+            return INPUT_ENTER;
         }
 
         if (inputText.equals(COMMAND_EXIT) || inputText.equals(COMMAND_QUIT)) {
-            return 0;
+            return INPUT_EXIT;
         }
 
         try {
-            return Integer.parseInt(inputText);
+            int chose = Integer.parseInt(inputText);
+            if(chose > 0 ){
+                return chose;
+            }
+            return INPUT_WRONG_FORMAT;
         } catch (NumberFormatException e) {
-            return -1;
+            return INPUT_WRONG_FORMAT;
         }
     }
 
-    public void parseResult(int number){
-
-    }
 }

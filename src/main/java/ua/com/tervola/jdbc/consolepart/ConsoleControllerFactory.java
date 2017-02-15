@@ -1,10 +1,13 @@
 package ua.com.tervola.jdbc.consolepart;
 
+import ua.com.tervola.jdbc.MainMenu;
 import ua.com.tervola.jdbc.controller.*;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 
 import java.sql.SQLException;
 import java.util.*;
+
+import static ua.com.tervola.jdbc.MainMenu.TABLES;
 
 /**
  * Created by user on 2/15/2017.
@@ -19,10 +22,14 @@ public class ConsoleControllerFactory {
     private PreparedDishesController preparedDishesController;
     private StoreController storeController;
 
-    public List<String> createController(int mainMenuNumber) throws SQLException {
+    public List<String> createController(MainMenu mainMenu) throws SQLException {
         List<String> result = new ArrayList<>();
-        switch (mainMenuNumber){
-            case 1: result = this.databaseController.getAllTables();
+
+
+        switch (mainMenu){
+            case TABLES:
+                result = databaseController.getAllTables();
+                break;
         }
         return result;
     }

@@ -2,6 +2,7 @@ package ua.com.tervola.jdbc.consolepart;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import ua.com.tervola.jdbc.MainMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,10 +16,11 @@ import java.util.List;
  */
 public class MainConsole {
     private Logger LOGGER = LogManager.getLogger(MainConsole.class);
-    private static List<String> MAIN_MENU = Arrays.asList("List of Tables", "Exit");
+    private static List<MainMenu> MAIN_MENU = Arrays.asList(MainMenu.TABLES, MainMenu.EXIT);
+    private static List<Integer> INTERURPT_LIST = Arrays.asList(-3,-2,-1,0);
 
 
-    
+
     ConsolePrinter consolePrinter;
     ConsoleValidator consoleValidator;
     ConsoleControllerFactory consoleControllerFactory;
@@ -32,18 +34,29 @@ public class MainConsole {
             String input = br.readLine().toLowerCase();
             int result = consoleValidator.validateInput(input);
 
-            if (result == 0 || result == MAIN_MENU.size()) {
-                consolePrinter.printGoodBuy();
-                break;
-            } else if (result == -1 || result > MAIN_MENU.size()){
-                consolePrinter.printRepeat();
-            } else if (result == -2) {
-                consolePrinter.print(new String());
+            if(INTERURPT_LIST.contains(result) || result > MAIN_MENU.size()){
+                if (interruptHandling(result)) {
+                    break;
+                }
+            } else {
+                MainMenu mainMenu = MAIN_MENU.get(result - 1);
+                consolePrinter.print(consoleControllerFactory.createController(mainMenu));
+                consolePrinter.printMainmenu(MAIN_MENU);
             }
-
-            consolePrinter.print(consoleControllerFactory.createController(result));
-            consolePrinter.printMainmenu(MAIN_MENU);
         }
+    }
+
+    private boolean interruptHandling(int result) {
+        boolean rval = false;
+        if (result == -2 || result == MAIN_MENU.size()) {
+            consolePrinter.printGoodBuy();
+            rval = true;
+        } else if (result == -3 || result == 0 || result > MAIN_MENU.size()) {
+            consolePrinter.printRepeat();
+        } else if (result == -1) {
+            consolePrinter.print(new String());
+        }
+        return rval;
     }
 
 
