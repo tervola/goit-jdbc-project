@@ -60,9 +60,8 @@
     </bean>
 
 
-
     <!--DAOs-->
-    <bean class="ua.com.tervola.jdbc.model.jdbc.AbstractJdbcTablesDao" id="AbstractJdbcTablesDao" >
+    <bean class="ua.com.tervola.jdbc.model.jdbc.AbstractJdbcTablesDao" id="AbstractJdbcTablesDao">
         <constructor-arg name="databaseController" ref="dataBaseController"></constructor-arg>
     </bean>
 

@@ -24,7 +24,7 @@ public class ConsoleValidator {
 
         try {
             int chose = Integer.parseInt(inputText);
-            if(chose > 0 ){
+            if (chose > 0) {
                 return chose;
             }
             return INPUT_WRONG_FORMAT;

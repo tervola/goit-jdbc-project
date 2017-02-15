@@ -17,8 +17,7 @@ import java.util.List;
 public class MainConsole {
     private Logger LOGGER = LogManager.getLogger(MainConsole.class);
     private static List<MainMenu> MAIN_MENU = Arrays.asList(MainMenu.TABLES, MainMenu.EXIT);
-    private static List<Integer> INTERURPT_LIST = Arrays.asList(-3,-2,-1,0);
-
+    private static List<Integer> INTERURPT_LIST = Arrays.asList(-3, -2, -1, 0);
 
 
     ConsolePrinter consolePrinter;
@@ -34,7 +33,7 @@ public class MainConsole {
             String input = br.readLine().toLowerCase();
             int result = consoleValidator.validateInput(input);
 
-            if(INTERURPT_LIST.contains(result) || result > MAIN_MENU.size()){
+            if (INTERURPT_LIST.contains(result) || result > MAIN_MENU.size()) {
                 if (interruptHandling(result)) {
                     break;
                 }
