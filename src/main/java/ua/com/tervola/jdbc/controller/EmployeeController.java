@@ -9,6 +9,7 @@ import ua.com.tervola.jdbc.model.Employee;
 import ua.com.tervola.jdbc.model.EmployeeDao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +48,14 @@ public class EmployeeController {
 
     public void removeEmployee(int employee_id) throws SQLException {
         employeeDao.removeEmployee(employee_id);
+    }
+
+    public List<String> getAllEmployeesAsString(){
+        List<String> rval = new ArrayList<>();
+        for (Employee employee : employeeDao.findAll()) {
+            rval.add(employee.toString());
+        }
+        return rval;
     }
 
 }

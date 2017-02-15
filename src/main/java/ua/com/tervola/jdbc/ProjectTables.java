@@ -1,4 +1,4 @@
-package ua.com.tervola.jdbc.model;
+package ua.com.tervola.jdbc;
 
 /**
  * Created by user on 2/14/2017.

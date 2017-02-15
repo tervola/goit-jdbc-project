@@ -7,6 +7,7 @@ import ua.com.tervola.jdbc.model.Dish;
 import ua.com.tervola.jdbc.model.DishDao;
 import ua.com.tervola.jdbc.model.EmployeeDao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +46,15 @@ public class DishController {
 
     public List<Dish> findAllDishes() {
         return this.dishDao.findAllDishes();
+    }
+
+    public List<String> findAllDishesAsStringList(){
+
+        List<String> rval = new ArrayList<>();
+        for (Dish dish : this.dishDao.findAllDishes()) {
+            rval.add(dish.toString());
+        }
+        return rval;
     }
 
 }

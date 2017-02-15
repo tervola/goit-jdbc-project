@@ -1,11 +1,11 @@
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.junit.*;
 import org.junit.Test;
+import ua.com.tervola.jdbc.ProjectTables;
 import ua.com.tervola.jdbc.controller.*;
 import ua.com.tervola.jdbc.model.*;
 import ua.com.tervola.jdbc.model.jdbc.*;
 
-import java.awt.*;
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import java.util.*;

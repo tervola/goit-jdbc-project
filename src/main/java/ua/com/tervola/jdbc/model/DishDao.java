@@ -20,6 +20,5 @@ public interface DishDao {
 
     Dish findDishById(int id);
 
-    @Transactional
     List<Integer> getIndexes() throws SQLException;
 }

@@ -5,8 +5,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import ua.com.tervola.jdbc.model.DatabaseDao;
-import ua.com.tervola.jdbc.model.Employee;
-import ua.com.tervola.jdbc.model.ProjectTables;
+import ua.com.tervola.jdbc.ProjectTables;
 
 import java.sql.*;
 import java.util.ArrayList;

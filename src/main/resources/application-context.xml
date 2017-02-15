@@ -43,12 +43,12 @@
     <bean class="ua.com.tervola.jdbc.consolepart.MainConsole" id="mainConsole">
         <property name="consolePrinter" ref="consolePrinter"></property>
         <property name="consoleValidator" ref="consoleParser"></property>
-        <property name="consoleControllerFactory" ref="consoleControllerFactory"></property>
+        <property name="consoleMenuFactory" ref="consoleControllerFactory"></property>
     </bean>
 
     <bean class="ua.com.tervola.jdbc.consolepart.ConsolePrinter" id="consolePrinter"/>
     <bean class="ua.com.tervola.jdbc.consolepart.ConsoleValidator" id="consoleParser"/>
-    <bean class="ua.com.tervola.jdbc.consolepart.ConsoleControllerFactory" id="consoleControllerFactory">
+    <bean class="ua.com.tervola.jdbc.consolepart.ConsoleMenuFactory" id="consoleControllerFactory">
         <property name="databaseDao" ref="JdbcDatabaseDao"></property>
         <property name="databaseController" ref="dataBaseController"></property>
         <property name="employeeController" ref="employeeController"></property>

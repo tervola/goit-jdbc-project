@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.MenuDao;
 import ua.com.tervola.jdbc.model.ProjectMenu;
-import ua.com.tervola.jdbc.model.ProjectTables;
+import ua.com.tervola.jdbc.ProjectTables;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

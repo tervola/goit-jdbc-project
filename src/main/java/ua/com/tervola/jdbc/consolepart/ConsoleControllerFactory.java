@@ -1,83 +1,57 @@
 package ua.com.tervola.jdbc.consolepart;
 
 import ua.com.tervola.jdbc.MainMenu;
-import ua.com.tervola.jdbc.controller.*;
-import ua.com.tervola.jdbc.model.DatabaseDao;
 
-import java.sql.SQLException;
-import java.util.*;
-
-import static ua.com.tervola.jdbc.MainMenu.TABLES;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by user on 2/15/2017.
  */
 public class ConsoleControllerFactory {
-    private DatabaseDao databaseDao;
-    private DatabaseController databaseController;
-    private EmployeeController employeeController;
-    private DishController dishController;
-    private MenuController menuController;
-    private OrderController orderController;
-    private PreparedDishesController preparedDishesController;
-    private StoreController storeController;
 
-    public List<String> createController(MainMenu mainMenu) throws SQLException {
-        List<String> result = new ArrayList<>();
+    private static ConsolePrinter consolePrinter;
+    private static ConsoleValidator consoleValidator;
 
+    //TODO: move menu list
+    private static List<MainMenu> MAIN_MENU = Arrays.asList(MainMenu.TABLES, MainMenu.SHOWTABLES, MainMenu.EXIT);
+    private static List<Integer> INTERURPT_LIST = Arrays.asList(-3, -2, -1, 0);
 
-        switch (mainMenu){
-            case TABLES:
-                result = databaseController.getAllTables();
-                break;
-        }
-        return result;
-    }
-
-    public void setEmployeeController(EmployeeController employeeController) {
-        this.employeeController = employeeController;
-    }
-
-    public void setDatabaseDao(DatabaseDao databaseDao) {
-        this.databaseDao = databaseDao;
-    }
-
-
-    public void setDatabaseController(DatabaseController databaseController) {
-        this.databaseController = databaseController;
-    }
-
-    public void setDishController(DishController dishController) {
-        this.dishController = dishController;
-    }
-
-    public void setMenuController(MenuController menuController) {
-        this.menuController = menuController;
-    }
-
-    public void setOrderController(OrderController orderController) {
-        this.orderController = orderController;
-    }
-
-    public void setPreparedDishesController(PreparedDishesController preparedDishesController) {
-        this.preparedDishesController = preparedDishesController;
-    }
-
-    public void setStoreController(StoreController storeController) {
-        this.storeController = storeController;
-    }
-
-    @Override
-    public String toString() {
-        return "MainConsole{" +
-                "databaseDao=" + databaseDao +
-                ",\n databaseController=" + databaseController +
-                ",\n employeeController=" + employeeController +
-                ",\n dishController=" + dishController +
-                ",\n menuController=" + menuController +
-                ",\n orderController=" + orderController +
-                ",\n preparedDishesController=" + preparedDishesController +
-                ",\n storeController=" + storeController +
-                '}';
-    }
+//    private List<String> getRecordList(){
+//
+//    }
+//
+//    public static List<String> selectRecordsFromTable() {
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//
+//        while (true) {
+//            String input = br.readLine().toLowerCase();
+//            int result = consoleValidator.validateInput(input);
+//
+//            if (INTERURPT_LIST.contains(result) || result > MAIN_MENU.size()) {
+//                if (interruptHandling(result)) {
+//                    break;
+//                }
+//            } else {
+//                MainMenu mainMenu = MAIN_MENU.get(result - 1);
+//                consolePrinter.print(consoleMenuFactory.createController(mainMenu));
+//                consolePrinter.printMainMenu(MAIN_MENU);
+//            }
+//        }
+//    }
+//
+//    private boolean interruptHandling(int result) {
+//        boolean rval = false;
+//        if (result == -2 || result == MAIN_MENU.size()) {
+//            consolePrinter.printGoodBuy();
+//            rval = true;
+//        } else if (result == -3 || result == 0 || result > MAIN_MENU.size()) {
+//            consolePrinter.printRepeat();
+//        } else if (result == -1) {
+//            consolePrinter.print(new String());
+//        }
+//        return rval;
+//    }
 }

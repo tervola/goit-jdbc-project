@@ -1,14 +1,12 @@
 package ua.com.tervola.jdbc.model.jdbc;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.Employee;
 import ua.com.tervola.jdbc.model.EmployeeDao;
-import ua.com.tervola.jdbc.model.ProjectTables;
+import ua.com.tervola.jdbc.ProjectTables;
 
 import java.sql.*;
 import java.util.ArrayList;

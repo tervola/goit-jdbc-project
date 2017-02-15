@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class MainConsole {
     private Logger LOGGER = LogManager.getLogger(MainConsole.class);
-    private static List<MainMenu> MAIN_MENU = Arrays.asList(MainMenu.TABLES, MainMenu.EXIT);
     private static List<Integer> INTERURPT_LIST = Arrays.asList(-3, -2, -1, 0);
-
+    //TODO: move menu list
+    private static List<MainMenu> MAIN_MENU = Arrays.asList(MainMenu.TABLES, MainMenu.SHOWTABLES, MainMenu.EXIT);
 
     ConsolePrinter consolePrinter;
     ConsoleValidator consoleValidator;
-    ConsoleControllerFactory consoleControllerFactory;
+    ConsoleMenuFactory consoleMenuFactory;
 
     public void run() throws IOException, SQLException {
         consolePrinter.printHead(MAIN_MENU);
@@ -39,8 +39,8 @@ public class MainConsole {
                 }
             } else {
                 MainMenu mainMenu = MAIN_MENU.get(result - 1);
-                consolePrinter.print(consoleControllerFactory.createController(mainMenu));
-                consolePrinter.printMainmenu(MAIN_MENU);
+                consoleMenuFactory.createController(mainMenu);
+                consolePrinter.printMainMenu(MAIN_MENU);
             }
         }
     }
@@ -67,7 +67,7 @@ public class MainConsole {
         this.consoleValidator = consoleValidator;
     }
 
-    public void setConsoleControllerFactory(ConsoleControllerFactory consoleControllerFactory) {
-        this.consoleControllerFactory = consoleControllerFactory;
+    public void setConsoleMenuFactory(ConsoleMenuFactory consoleMenuFactory) {
+        this.consoleMenuFactory = consoleMenuFactory;
     }
 }

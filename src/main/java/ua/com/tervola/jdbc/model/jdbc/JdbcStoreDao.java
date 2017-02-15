@@ -4,10 +4,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.model.Ingridient;
-import ua.com.tervola.jdbc.model.ProjectTables;
+import ua.com.tervola.jdbc.ProjectTables;
 import ua.com.tervola.jdbc.model.StoreDao;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

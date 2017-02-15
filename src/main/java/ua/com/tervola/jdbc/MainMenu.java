@@ -5,7 +5,8 @@ package ua.com.tervola.jdbc;
  */
 public enum MainMenu {
 
-    TABLES("List of tables"),
+    TABLES("List of tables in DB"),
+    SHOWTABLES("Show records from table"),
     EXIT("Exit");
 
     private String name;

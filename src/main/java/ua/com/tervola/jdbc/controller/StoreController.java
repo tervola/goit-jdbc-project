@@ -6,6 +6,7 @@ import ua.com.tervola.jdbc.model.Ingridient;
 import ua.com.tervola.jdbc.model.StoreDao;
 import ua.com.tervola.jdbc.model.jdbc.JdbcStoreDao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,27 +20,35 @@ public class StoreController {
         this.storeDao = jdbcStoreDao;
     }
 
-    public void addNewIngridients(Ingridient ingridient){
+    public void addNewIngridients(Ingridient ingridient) {
         this.storeDao.addNewIngridients(ingridient);
     }
 
-    public void removeIngridients(int ingridients_id){
+    public void removeIngridients(int ingridients_id) {
         this.storeDao.removeIngridients(ingridients_id);
     }
 
-    public void updateIngridients(Ingridient ingridient){
+    public void updateIngridients(Ingridient ingridient) {
         this.storeDao.updateIngridients(ingridient);
     }
 
-    public void findIngridientByName(String name){
+    public void findIngridientByName(String name) {
         this.storeDao.findIngridientByName(name);
     }
 
-    public List<Ingridient> findAllIngridients(){
+    public List<Ingridient> findAllIngridients() {
         return this.storeDao.findAllIngridients();
     }
 
-    public List<Ingridient> findAllIngridientsByAmount(int amount){
+    public List<Ingridient> findAllIngridientsByAmount(int amount) {
         return this.storeDao.findAllIngridients();
+    }
+
+    public List<String> findAllIngridientsAsString() {
+        List<String> rval = new ArrayList<>();
+        for (Ingridient ingridient : this.storeDao.findAllIngridients()) {
+            rval.add(ingridient.toString());
+        }
+        return rval;
     }
 }
