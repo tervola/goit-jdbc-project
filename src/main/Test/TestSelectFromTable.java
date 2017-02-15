@@ -76,7 +76,6 @@ public class TestSelectFromTable extends Assert {
 
         this.storeDao = new JdbcStoreDao(this.databaseController);
         this.storeController = new StoreController(this.storeDao);
-
     }
 
     @Test

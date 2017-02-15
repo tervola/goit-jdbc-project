@@ -29,6 +29,26 @@
 
 
     <bean class="ua.com.tervola.jdbc.MainClass" id="mainClass">
+        <property name="mainConsole" ref="mainConsole"></property>
+        <!--<property name="databaseDao" ref="JdbcDatabaseDao"></property>-->
+        <!--<property name="databaseController" ref="dataBaseController"></property>-->
+        <!--<property name="employeeController" ref="employeeController"></property>-->
+        <!--<property name="dishController" ref="dishController"></property>-->
+        <!--<property name="menuController" ref="menuController"></property>-->
+        <!--<property name="orderController" ref="orderController"></property>-->
+        <!--<property name="preparedDishesController" ref="preparedDishesController"></property>-->
+        <!--<property name="storeController" ref="storeController"></property>-->
+
+    </bean>
+    <bean class="ua.com.tervola.jdbc.consolepart.MainConsole" id="mainConsole">
+        <property name="consolePrinter" ref="consolePrinter"></property>
+        <property name="consoleValidator" ref="consoleParser"></property>
+        <property name="consoleControllerFactory" ref="consoleControllerFactory"></property>
+    </bean>
+
+    <bean class="ua.com.tervola.jdbc.consolepart.ConsolePrinter" id="consolePrinter"/>
+    <bean class="ua.com.tervola.jdbc.consolepart.ConsoleValidator" id="consoleParser"/>
+    <bean class="ua.com.tervola.jdbc.consolepart.ConsoleControllerFactory" id="consoleControllerFactory">
         <property name="databaseDao" ref="JdbcDatabaseDao"></property>
         <property name="databaseController" ref="dataBaseController"></property>
         <property name="employeeController" ref="employeeController"></property>
@@ -37,8 +57,9 @@
         <property name="orderController" ref="orderController"></property>
         <property name="preparedDishesController" ref="preparedDishesController"></property>
         <property name="storeController" ref="storeController"></property>
-
     </bean>
+
+
 
     <!--DAOs-->
     <bean class="ua.com.tervola.jdbc.model.jdbc.AbstractJdbcTablesDao" id="AbstractJdbcTablesDao" >
