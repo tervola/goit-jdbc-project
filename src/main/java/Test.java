@@ -1,4 +1,8 @@
+import java.io.File;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -7,9 +11,15 @@ import java.util.Random;
  */
 public class Test {
     public static void main(String[] args) {
-        Random random = new Random();
-        int r = random.nextInt(1000);
-        System.out.println(r);
+        Path path = Paths.get("C:\\tmp\\");
+        File myDirectory = path.toFile();
+        for (File file : myDirectory.listFiles()) {
+            String fileName = file.getName();
+            if ("1.txt".equals(fileName)) {
+                System.out.println("bingo");
+            }
+        }
+
 
     }
 }

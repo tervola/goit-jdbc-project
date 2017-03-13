@@ -17,8 +17,8 @@ public class ConsolePrinter {
     private static String TEXT_HEAD = "MAIN PROJECT CONSOLE. Start from 2/15/2017";
     private static String TEXT_GOODBUY = "Goodbye!";
     private static String TEXT_WRONG_INPUT = "Wrong input, try again!";
-    private static String TEXT_WRONG_TABLE_INPUT = "Unrecognized table, try again or type \"exit\" to return Main menu:";
-    private static String TEXT_START_RESULT = "<=== FINISH ===>";
+    private static String TEXT_WRONG_TABLE_INPUT = "Unrecognized input, try again or type \"exit\" to return Main menu:";
+    private static String TEXT_START_RESULT = "<=== START ===>";
     private static String TEXT_END_RESULT = "<=== FINISH ===>";
     private static String TEXT_TOTAL_RECORDS = "Total records: ";
 
@@ -72,7 +72,7 @@ public class ConsolePrinter {
         print(SHOW_TABLE_INPUT);
     }
 
-    public void printRepeathowRecordsMenu(){
+    public void printRepeatShowRecordsMenu(){
         print(TEXT_WRONG_TABLE_INPUT);
     }
 
@@ -84,5 +84,9 @@ public class ConsolePrinter {
             index++;
         }
         print(SHOW_TABLE_INPUT);
+    }
+
+    public void printInLine(String s) {
+        System.out.print(s);
     }
 }

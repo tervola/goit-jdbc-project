@@ -16,7 +16,7 @@ public class ConsoleControllerFactory {
     private static ConsoleValidator consoleValidator;
 
     //TODO: move menu list
-    private static List<MainMenu> MAIN_MENU = Arrays.asList(MainMenu.TABLES, MainMenu.SHOWTABLES, MainMenu.EXIT);
+    private static List<MainMenu> MAIN_MENU = Arrays.asList(MainMenu.TABLES, MainMenu.SHOWTABLES,MainMenu.OPERATIONS, MainMenu.EXIT);
     private static List<Integer> INTERURPT_LIST = Arrays.asList(-3, -2, -1, 0);
 
 //    private List<String> getRecordList(){
@@ -28,7 +28,7 @@ public class ConsoleControllerFactory {
 //
 //        while (true) {
 //            String input = br.readLine().toLowerCase();
-//            int result = consoleValidator.validateInput(input);
+//            int result = consoleValidator.getInputNumber(input);
 //
 //            if (INTERURPT_LIST.contains(result) || result > MAIN_MENU.size()) {
 //                if (interruptHandling(result)) {

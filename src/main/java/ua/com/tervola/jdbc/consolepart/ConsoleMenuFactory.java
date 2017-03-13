@@ -4,6 +4,7 @@ import ua.com.tervola.jdbc.MainMenu;
 import ua.com.tervola.jdbc.ProjectTables;
 import ua.com.tervola.jdbc.controller.*;
 import ua.com.tervola.jdbc.model.DatabaseDao;
+import ua.com.tervola.jdbc.ProjectOperations;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,13 +26,18 @@ public class ConsoleMenuFactory {
     private StoreController storeController;
 
     private ConsolePrinter consolePrinter = new ConsolePrinter();
-    private static List<ProjectTables> SHOW_TABLES_MENU = Arrays.asList(
+    ConsoleValidator consoleValidator = new ConsoleValidator();
+    private static List<ProjectTables> TABLES_MENU = Arrays.asList(
             ProjectTables.DISH,
             ProjectTables.EMPLOYEE,
             ProjectTables.MENU,
             ProjectTables.ORDER,
             ProjectTables.PREPARED_DISHES,
             ProjectTables.STORAGE);
+    private static List<ProjectOperations> CRUD_OPERATIONS = Arrays.asList(
+            ProjectOperations.INSERT,
+            ProjectOperations.UPDATE,
+            ProjectOperations.Delete);
 
     public void createController(MainMenu mainMenu) throws SQLException, IOException {
         List<String> result = new ArrayList<>();
@@ -39,38 +45,64 @@ public class ConsoleMenuFactory {
 
         switch (mainMenu) {
             case TABLES:
-                consolePrinter.print(databaseController.getAllTables());
+                this.consolePrinter.print(databaseController.getAllTables());
                 break;
             case SHOWTABLES:
                 //TODO: move to class
-                //TODO: add validator
-                consolePrinter.print("Entering to \"Show records from table\"..");
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                consolePrinter.printShowTablesMenu(SHOW_TABLES_MENU);
+
                 while (true) {
-                    String input = br.readLine().toLowerCase();
-                    if (input.equals("dish")) {
+                    consolePrinter.print("Entering to \"Show records from table\".. 'e' or 'q' to exit previous menu");
+                    consolePrinter.printShowTablesMenu(TABLES_MENU);
+
+                    int inputAfterValidation = inputAndValidate();
+
+                    if (inputAfterValidation == 1){
                         consolePrinter.print(dishController.findAllDishesAsStringList());
-                    } else if (input.equals("employee")) {
+                    } else if (inputAfterValidation == 2) {
                         consolePrinter.print(employeeController.getAllEmployeesAsString());
-                    } else if (input.equals("menu")) {
+                    } else if (inputAfterValidation == 3) {
                         consolePrinter.print(menuController.findAllMenuAsString());
-                    } else if (input.equals("order")) {
+                    } else if (inputAfterValidation == 4) {
                         consolePrinter.print(orderController.findClosedOrdersAsString());
-                    } else if (input.equals("prepared_dishes")) {
+                    } else if (inputAfterValidation == 5) {
                         consolePrinter.print(preparedDishesController.findAllPreparedDishesAsString());
-                    } else if (input.equals("storage")) {
+                    } else if (inputAfterValidation == 6) {
                         consolePrinter.print(storeController.findAllIngridientsAsString());
-                    } else if (input.equals("exit")) {
+                    } else if (inputAfterValidation == -2) {
                         break;
                     } else {
-                        consolePrinter.printRepeathowRecordsMenu();
+                        consolePrinter.printRepeatShowRecordsMenu();
                     }
                 }
                 break;
+            case OPERATIONS:
+                while (true){
+                    System.out.println("Enter CRUD command 'e' or 'q' to exit previous menu:");
+                    int index = 1;
+                    for (ProjectOperations crudOperation : CRUD_OPERATIONS) {
+                        System.out.println(index++ + ". " + crudOperation);
+                    }
 
+
+                    int inputAfterValidation = inputAndValidate();
+
+                    if(inputAfterValidation == -2){
+                        break;
+                    }
+                    ProjectOperations projectOperations = CRUD_OPERATIONS.get(inputAfterValidation - 1);
+                    CrudOperation crudOperation = new CrudOperation(this.consoleValidator, TABLES_MENU, databaseController);
+                    consolePrinter.print(crudOperation.getResult(projectOperations));
+                }
+                break;
         }
 
+    }
+
+    private int inputAndValidate() throws IOException {
+        System.out.print("type:\\> ");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String input = br.readLine().toLowerCase();
+        return this.consoleValidator.getInputNumber(input);
     }
 
     public void setEmployeeController(EmployeeController employeeController) {

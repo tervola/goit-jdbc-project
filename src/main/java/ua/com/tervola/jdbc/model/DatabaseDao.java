@@ -17,4 +17,6 @@ public interface DatabaseDao {
     ComboPooledDataSource getDataSource();
 
     void setDataSource(ComboPooledDataSource dataSource);
+
+    List<String> getFieldsInTable(String table);
 }

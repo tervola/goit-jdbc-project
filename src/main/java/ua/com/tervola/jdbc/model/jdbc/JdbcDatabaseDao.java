@@ -21,7 +21,8 @@ public class JdbcDatabaseDao implements DatabaseDao {
 
     private static String FIELD_TABLE_SCHEMA = "table_schema";
     private static String FIELD_TABLE_NAME = "table_name";
-    private static String FIELD_CONDITION = "public";
+    private static String FIELD_COLUMN_NAME = "column_name";
+    private static String FIELD_CONDITION_PUBLIC = "public";
 
     private ComboPooledDataSource dataSource;
 
@@ -46,7 +47,7 @@ public class JdbcDatabaseDao implements DatabaseDao {
                     FIELD_TABLE_NAME,
                     ProjectTables.SYSTEM_TABLE_INFORMATION_SCHEMA,
                     FIELD_TABLE_SCHEMA,
-                    FIELD_CONDITION);
+                    FIELD_CONDITION_PUBLIC);
             ResultSet resultSet = statement.executeQuery(sqlCommand);
             while(resultSet.next()){
                 result.add(resultSet.getString("table_name"));
@@ -66,5 +67,31 @@ public class JdbcDatabaseDao implements DatabaseDao {
     @Override
     public ComboPooledDataSource getDataSource() {
         return dataSource;
+    }
+
+    @Override
+    public List<String> getFieldsInTable(String table) {
+        List<String> result = new ArrayList<>();
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            String sqlCommand = String.format("SELECT %s FROM %s WHERE %s = '%s' AND %s = '%s'",
+                    FIELD_COLUMN_NAME,
+                    ProjectTables.SYSTEM_COLUMN_INFORMATION_SCHEMA,
+                    FIELD_TABLE_NAME,
+                    table,
+                    FIELD_TABLE_SCHEMA,
+                    FIELD_CONDITION_PUBLIC);
+            ResultSet resultSet = statement.executeQuery(sqlCommand);
+            while(resultSet.next()){
+                result.add(resultSet.getString(FIELD_COLUMN_NAME));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(result.toString());
+        return result;
     }
 }

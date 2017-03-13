@@ -1,8 +1,6 @@
 package ua.com.tervola.jdbc.controller;
 
-import com.mchange.v2.c3p0.AbstractComboPooledDataSource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import org.springframework.stereotype.Component;
 import ua.com.tervola.jdbc.model.DatabaseDao;
 
 import java.sql.Connection;
@@ -31,5 +29,9 @@ public class DatabaseController {
 
     public ComboPooledDataSource getManager() {
         return this.databaseDao.getDataSource();
+    }
+
+    public List<String> getFieldsInTable(String table) {
+        return this.databaseDao.getFieldsInTable(table);
     }
 }

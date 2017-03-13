@@ -10,7 +10,8 @@ public enum ProjectTables {
     ORDER("order"),
     PREPARED_DISHES("prepared_dishes"),
     STORAGE("storage"),
-    SYSTEM_TABLE_INFORMATION_SCHEMA("information_schema.tables");
+    SYSTEM_TABLE_INFORMATION_SCHEMA("information_schema.tables"),
+    SYSTEM_COLUMN_INFORMATION_SCHEMA("information_schema.columns");
 
     final private String tableName;
 

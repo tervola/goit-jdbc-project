@@ -59,7 +59,6 @@
         <property name="storeController" ref="storeController"></property>
     </bean>
 
-
     <!--DAOs-->
     <bean class="ua.com.tervola.jdbc.model.jdbc.AbstractJdbcTablesDao" id="AbstractJdbcTablesDao">
         <constructor-arg name="databaseController" ref="dataBaseController"></constructor-arg>
@@ -108,7 +107,7 @@
     <!--Controllers-->
     <bean class="ua.com.tervola.jdbc.controller.EmployeeController" id="employeeController">
         <!--<constructor-arg index="0" ref="txManager"/>-->
-        <constructor-arg index="1" ref="JdbcEmployeeDao"/>
+        <constructor-arg index="0" ref="JdbcEmployeeDao"/>
     </bean>
 
     <bean class="ua.com.tervola.jdbc.controller.DishController" id="dishController">
