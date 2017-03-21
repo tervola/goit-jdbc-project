@@ -37,7 +37,7 @@ public class JdbcDatabaseDao implements DatabaseDao {
     }
 
     @Override
-    public List<String> getAllTables()  {
+    public List<String> getAllTables() {
         List<String> result = new ArrayList<>();
         Connection connection = null;
         try {
@@ -49,7 +49,7 @@ public class JdbcDatabaseDao implements DatabaseDao {
                     FIELD_TABLE_SCHEMA,
                     FIELD_CONDITION_PUBLIC);
             ResultSet resultSet = statement.executeQuery(sqlCommand);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 result.add(resultSet.getString("table_name"));
             }
         } catch (SQLException e) {
@@ -84,14 +84,26 @@ public class JdbcDatabaseDao implements DatabaseDao {
                     FIELD_TABLE_SCHEMA,
                     FIELD_CONDITION_PUBLIC);
             ResultSet resultSet = statement.executeQuery(sqlCommand);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 result.add(resultSet.getString(FIELD_COLUMN_NAME));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        System.out.println(result.toString());
+//        System.out.println(result.toString());
         return result;
+    }
+
+    @Override
+    public void updateTable(String sqlCommand) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

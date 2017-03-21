@@ -34,4 +34,8 @@ public class DatabaseController {
     public List<String> getFieldsInTable(String table) {
         return this.databaseDao.getFieldsInTable(table);
     }
+
+    public void updateTable(String sqlCommand) {
+        this.databaseDao.updateTable(sqlCommand);
+    }
 }

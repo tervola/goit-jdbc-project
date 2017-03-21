@@ -30,13 +30,12 @@ public class CrudOperation {
     public String getResult(ProjectOperations projectOperation) throws IOException {
         String operation = "";
         while (true) {
-            consolePrinter.print(String.format("Chose base for operation %s:", projectOperation.toString()));
+            consolePrinter.print(String.format("Chose table for operation %s:", projectOperation.toString().toUpperCase()));
             int index = 1;
             for (ProjectTables table : tables) {
                 System.out.println(index + ". " + table.toString());
                 index++;
             }
-            consolePrinter.printInLine("type:\\> ");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String input = br.readLine().toLowerCase();
             int inputAfterValidation = consoleValidator.getInputNumber(input);
@@ -45,36 +44,56 @@ public class CrudOperation {
             } else {
                 ProjectTables projectTables = tables.get(inputAfterValidation - 1);
                 operation = getOperation(projectOperation, projectTables);
-
+                break;
             }
         }
         return operation;
     }
 
+    private void doOperation(String operation) {
+        this.databaseController.updateTable(operation);
+    }
+
     private String getOperation(ProjectOperations projectOperation, ProjectTables projectTables) throws IOException {
+        String operationLine = "";
+
         while (true) {
-            consolePrinter.print(String.format("---\nType command  for '%s' on table: %s", projectOperation.toString(), projectTables.toString()));
+            consolePrinter.print(String.format("\n\n---\nType command  for '%s' on table: %s", projectOperation.toString().toUpperCase(), projectTables.toString().toUpperCase()));
             StringBuilder sampleString = new StringBuilder();
+            List<String> fieldsInTable = null;
             if (projectOperation.equals(ProjectOperations.INSERT)) {
-                sampleString.append(String.format("(Example: %s INTO %s VALUES (..)\n Fields: %s",
-                        projectOperation.toString(),
+                fieldsInTable = this.databaseController.getFieldsInTable(projectTables.toString());
+                sampleString.append(String.format(" INSERT INTO %s VALUES (",
                         projectTables.toString()));
-                sampleString.append(this.databaseController.getFieldsInTable(projectTables.toString()));
+
+                String prefix = "";
+                for (String column : fieldsInTable) {
+                    sampleString.append(prefix);
+                    prefix = ",";
+                    sampleString.append(column);
+                }
+                sampleString.append(")");
+                sampleString.append("\nTape only values separated by commas:");
             } else if (projectOperation.equals(ProjectOperations.Delete)) {
                 sampleString.append(String.format("(Example: %s FROM %s WHERE field = some_field", projectOperation.toString(), projectTables.toString()));
             } else if (projectOperation.equals(ProjectOperations.UPDATE)) {
                 sampleString.append(String.format("(Example: %s %s SET field = some_field WHERE field_id = some_field_id", projectOperation.toString(), projectTables.toString()));
             }
             consolePrinter.print(sampleString.toString());
-            consolePrinter.printInLine("type:\\> ");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String input = br.readLine().toLowerCase();
             int inputAfterValidation = consoleValidator.getInputNumber(input);
             if (inputAfterValidation == -2) {
                 break;
             }
+
+            operationLine = consoleValidator.parseCommand(projectOperation, input, fieldsInTable, projectTables);
+            if (!operationLine.startsWith("ERROR:")) {
+                System.out.println("Command will perform:\n " + operationLine);
+                break;
+            }
         }
-        return "success";
+        return operationLine;
     }
 
 }

@@ -1,5 +1,6 @@
 package ua.com.tervola.jdbc.consolepart;
 
+import ua.com.tervola.jdbc.ProjectOperations;
 import ua.com.tervola.jdbc.ProjectTables;
 
 import java.io.BufferedReader;
@@ -21,6 +22,8 @@ public class ConsoleValidator {
     private static int INPUT_ENTER = -1;
     private static int INPUT_EXIT = -2;
     private static int INPUT_WRONG_FORMAT = -3;
+
+    private static String OUTLINE_INSERT = "INSERT INTO %s VALUES (";
 
     public int getInputNumber(String inputText) throws IOException {
 
@@ -49,4 +52,51 @@ public class ConsoleValidator {
         return null;
     }
 
+    public String parseCommand(ProjectOperations projectOperation, String input, List<String> tableSize, ProjectTables projectTables) {
+        String rval = "";
+
+        if (projectOperation.equals(ProjectOperations.INSERT)) {
+            String[] split = input.split(",");
+            if (split.length != tableSize.size()) {
+                return "ERROR: Miss one or move values";
+            }
+
+            if (input.endsWith(",")) {
+                input = input.substring(0, input.length() - 1);
+            }
+
+            StringBuilder outLine = new StringBuilder();
+            outLine.append(String.format(OUTLINE_INSERT, projectTables.toString()));
+            String prefix = "";
+            for (String line : split) {
+                boolean isDigit = false;
+                if (line.contains(",")) {
+                    try {
+                        Double.parseDouble(line);
+                        isDigit = true;
+                    } catch (Exception e) {
+                        //NoOP
+                    }
+                } else if (Character.isDigit(line.toCharArray()[0])) {
+                    try {
+                        Integer.parseInt(line);
+                        isDigit = true;
+                    } catch (Exception e) {
+                        //NoOP
+                    }
+                }
+
+                if (!isDigit) {
+                    line = String.format("'%s'", line);
+                }
+
+                outLine.append(prefix);
+                prefix = ",";
+                outLine.append(line);
+            }
+            outLine.append(")");
+            rval = outLine.toString();
+        }
+        return rval;
+    }
 }

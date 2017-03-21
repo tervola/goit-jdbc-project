@@ -92,6 +92,7 @@ public class ConsoleMenuFactory {
                     ProjectOperations projectOperations = CRUD_OPERATIONS.get(inputAfterValidation - 1);
                     CrudOperation crudOperation = new CrudOperation(this.consoleValidator, TABLES_MENU, databaseController);
                     consolePrinter.print(crudOperation.getResult(projectOperations));
+                    break;
                 }
                 break;
         }
@@ -99,7 +100,6 @@ public class ConsoleMenuFactory {
     }
 
     private int inputAndValidate() throws IOException {
-        System.out.print("type:\\> ");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String input = br.readLine().toLowerCase();
         return this.consoleValidator.getInputNumber(input);

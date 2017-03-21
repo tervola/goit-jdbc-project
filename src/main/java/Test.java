@@ -11,15 +11,11 @@ import java.util.Random;
  */
 public class Test {
     public static void main(String[] args) {
-        Path path = Paths.get("C:\\tmp\\");
-        File myDirectory = path.toFile();
-        for (File file : myDirectory.listFiles()) {
-            String fileName = file.getName();
-            if ("1.txt".equals(fileName)) {
-                System.out.println("bingo");
-            }
-        }
+       String s = "sdfd,sdfsdf,sdfd";
 
+        String[] split = s.split(",");
+
+        System.out.println(split.length);
 
     }
 }
