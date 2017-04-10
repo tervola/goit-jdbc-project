@@ -27,7 +27,7 @@ public class CrudOperation {
         this.databaseController = databaseController;
     }
 
-    public String getResult(ProjectOperations projectOperation) throws IOException {
+    public void runOperation(ProjectOperations projectOperation) throws IOException {
         String operation = "";
         while (true) {
             consolePrinter.print(String.format("Chose table for operation %s:", projectOperation.toString().toUpperCase()));
@@ -47,7 +47,7 @@ public class CrudOperation {
                 break;
             }
         }
-        return operation;
+        doOperation(operation);
     }
 
     private void doOperation(String operation) {
@@ -63,7 +63,7 @@ public class CrudOperation {
             List<String> fieldsInTable = null;
             if (projectOperation.equals(ProjectOperations.INSERT)) {
                 fieldsInTable = this.databaseController.getFieldsInTable(projectTables.toString());
-                sampleString.append(String.format(" INSERT INTO %s VALUES (",
+                sampleString.append(String.format("INSERT INTO %s VALUES (",
                         projectTables.toString()));
 
                 String prefix = "";
@@ -75,7 +75,17 @@ public class CrudOperation {
                 sampleString.append(")");
                 sampleString.append("\nTape only values separated by commas:");
             } else if (projectOperation.equals(ProjectOperations.Delete)) {
-                sampleString.append(String.format("(Example: %s FROM %s WHERE field = some_field", projectOperation.toString(), projectTables.toString()));
+                sampleString.append(String.format("(DELETE FROM %s WHERE field = some_field", projectTables.toString()));
+                sampleString.append("\nFields:");
+
+                String prefix = "";
+                for (String column : fieldsInTable) {
+                    sampleString.append(prefix);
+                    prefix = ",";
+                    sampleString.append(column);
+                }
+                sampleString.append("\nTape 'field' and 'some_field' separated by commas:");
+
             } else if (projectOperation.equals(ProjectOperations.UPDATE)) {
                 sampleString.append(String.format("(Example: %s %s SET field = some_field WHERE field_id = some_field_id", projectOperation.toString(), projectTables.toString()));
             }

@@ -24,6 +24,7 @@ public class ConsoleValidator {
     private static int INPUT_WRONG_FORMAT = -3;
 
     private static String OUTLINE_INSERT = "INSERT INTO %s VALUES (";
+    private static String OUTLINE_DELETE = "DELETE FROM %s WHERE %s = %s";
 
     public int getInputNumber(String inputText) throws IOException {
 
@@ -55,14 +56,14 @@ public class ConsoleValidator {
     public String parseCommand(ProjectOperations projectOperation, String input, List<String> tableSize, ProjectTables projectTables) {
         String rval = "";
 
+        if (input.endsWith(",")) {
+            input = input.substring(0, input.length() - 1);
+        }
+
         if (projectOperation.equals(ProjectOperations.INSERT)) {
             String[] split = input.split(",");
             if (split.length != tableSize.size()) {
                 return "ERROR: Miss one or move values";
-            }
-
-            if (input.endsWith(",")) {
-                input = input.substring(0, input.length() - 1);
             }
 
             StringBuilder outLine = new StringBuilder();
@@ -96,6 +97,16 @@ public class ConsoleValidator {
             }
             outLine.append(")");
             rval = outLine.toString();
+        } else if (projectOperation.equals(ProjectOperations.Delete)){
+            String[] split = input.split(",");
+            if (split.length != 2) {
+                return "ERROR: Miss one or move values";
+            }
+
+            StringBuilder outLine = new StringBuilder();
+            String field = split[0];
+            String someField = split[1];
+            outLine.append(String.format(OUTLINE_DELETE, projectTables.toString(),field, someField));
         }
         return rval;
     }

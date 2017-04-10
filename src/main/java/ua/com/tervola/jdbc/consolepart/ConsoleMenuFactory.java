@@ -41,8 +41,6 @@ public class ConsoleMenuFactory {
 
     public void createController(MainMenu mainMenu) throws SQLException, IOException {
         List<String> result = new ArrayList<>();
-
-
         switch (mainMenu) {
             case TABLES:
                 this.consolePrinter.print(databaseController.getAllTables());
@@ -56,7 +54,7 @@ public class ConsoleMenuFactory {
 
                     int inputAfterValidation = inputAndValidate();
 
-                    if (inputAfterValidation == 1){
+                    if (inputAfterValidation == 1) {
                         consolePrinter.print(dishController.findAllDishesAsStringList());
                     } else if (inputAfterValidation == 2) {
                         consolePrinter.print(employeeController.getAllEmployeesAsString());
@@ -76,7 +74,7 @@ public class ConsoleMenuFactory {
                 }
                 break;
             case OPERATIONS:
-                while (true){
+                while (true) {
                     System.out.println("Enter CRUD command 'e' or 'q' to exit previous menu:");
                     int index = 1;
                     for (ProjectOperations crudOperation : CRUD_OPERATIONS) {
@@ -86,17 +84,17 @@ public class ConsoleMenuFactory {
 
                     int inputAfterValidation = inputAndValidate();
 
-                    if(inputAfterValidation == -2){
+                    if (inputAfterValidation == -2) {
                         break;
                     }
                     ProjectOperations projectOperations = CRUD_OPERATIONS.get(inputAfterValidation - 1);
                     CrudOperation crudOperation = new CrudOperation(this.consoleValidator, TABLES_MENU, databaseController);
-                    consolePrinter.print(crudOperation.getResult(projectOperations));
+
+                    crudOperation.runOperation(projectOperations);
                     break;
                 }
                 break;
         }
-
     }
 
     private int inputAndValidate() throws IOException {
