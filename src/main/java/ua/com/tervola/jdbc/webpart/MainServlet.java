@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ua.com.tervola.jdbc.controller.DatabaseController;
 import ua.com.tervola.jdbc.controller.EmployeeController;
+import ua.com.tervola.jdbc.controller.TablesController;
 import ua.com.tervola.jdbc.model.Employee;
 
 import javax.servlet.ServletConfig;
@@ -14,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,8 +28,8 @@ public class MainServlet extends HttpServlet {
     @Autowired
     private EmployeeController employeeController;
 
-    private static List<String> MENU_LIST = Arrays.asList("tables", "DAOobjects");
-    private static List<String> DAO_LIST = Arrays.asList("employeeDAO", "employeeDAO");
+    @Autowired
+    private TablesController controller;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -42,7 +42,7 @@ public class MainServlet extends HttpServlet {
 
         String action = getAction(request);
 
-        if( action.endsWith("tables")) {
+        if (action.endsWith("tables")) {
             List<String> result = null;
             try {
                 result = dataBaseController.getAllTables();
@@ -52,13 +52,25 @@ public class MainServlet extends HttpServlet {
                 request.setAttribute("error", "Error, during getting info from Database: " + e.toString());
                 pageRedirector("/error.jsp", request, response);
             }
-        } else if (action.endsWith("daos")){
-            request.setAttribute("daos", DAO_LIST);
-            pageRedirector("/daoobjects.jsp", request, response);
-        } else {
+        } else if (action.endsWith("storage")) {
 
-            request.setAttribute("menu", MENU_LIST);
+            List<String> result = controller.getStoreController().findAllIngridientsAsString();
+            request.setAttribute("storage", result);
+            pageRedirector("/storage.jsp", request, response);
+
+        } else if (action.endsWith("menu")) {
+
+            List<String> result = controller.getMenuController().findAllMenuAsString();
+            request.setAttribute("menu", result);
+            pageRedirector("/menu.jsp", request, response);
+
+        } else if (action.equals("/")) {
+
+            request.setAttribute("menu", TablesController.MENU_LIST);
             pageRedirector("/mainPage.jsp", request, response);
+        } else {
+            request.setAttribute("error", "Page not found");
+            pageRedirector("/error.jsp", request, response);
         }
 
     }
@@ -67,9 +79,9 @@ public class MainServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = getAction(request);
 
-        if(action.endsWith("modifying")){
+        if (action.endsWith("modifying")) {
             List<Employee> employees = employeeController.getAllEmployees();
-            List<List<String>> result= new ArrayList<>();
+            List<List<String>> result = new ArrayList<>();
             for (Employee employee : employees) {
 
             }
@@ -79,9 +91,9 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    private void pageRedirector(String page,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void pageRedirector(String page, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final ServletContext servletContext = getServletContext();
-        servletContext.getRequestDispatcher(page).forward(request,response);
+        servletContext.getRequestDispatcher(page).forward(request, response);
     }
 
 //    public void setDataBaseController(DatabaseController dataBaseController) {

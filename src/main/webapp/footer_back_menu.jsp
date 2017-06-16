@@ -8,7 +8,7 @@
 <table style="color: darkblue; font-size: small">
     <tr>
         <td >
-            Return to <a href="mainPage">main Page</a>
+            Return to <a href="/">main Page</a>
         </td>
     </tr>
 </table>

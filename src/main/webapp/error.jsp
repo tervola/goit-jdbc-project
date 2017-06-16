@@ -19,7 +19,7 @@
 
 </table>
 
-<p>You can go to <a href="coffee">main Page</a>
+    <%@include file="footer_back_menu.jsp" %>
     <%@include file="footer_copyright.jsp" %>
 </body>
 </html>
