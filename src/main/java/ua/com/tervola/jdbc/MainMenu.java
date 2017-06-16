@@ -7,7 +7,7 @@ public enum MainMenu {
 
     TABLES("List of tables in DB"),
     SHOWTABLES("Show records from table"),
-    OPERATIONS("Create, Insert, Update or Delete records"),
+    OPERATIONS("Create, Insert, Update or DELETE records"),
     EXIT("Exit");
 
     private String name;

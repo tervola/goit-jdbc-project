@@ -37,7 +37,7 @@ public class ConsoleMenuFactory {
     private static List<ProjectOperations> CRUD_OPERATIONS = Arrays.asList(
             ProjectOperations.INSERT,
             ProjectOperations.UPDATE,
-            ProjectOperations.Delete);
+            ProjectOperations.DELETE);
 
     public void createController(MainMenu mainMenu) throws SQLException, IOException {
         List<String> result = new ArrayList<>();

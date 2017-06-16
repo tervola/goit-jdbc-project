@@ -15,6 +15,10 @@ import java.util.List;
 public class CrudOperation {
 
 
+    private static final String EXAMPLE_DELETE = "\nEXAMPLES:\n" +
+            "dish_id=14\n" +
+            "dish_id>14\n" +
+            "title=varenyk\n";
     DatabaseController databaseController;
 
     ConsoleValidator consoleValidator;
@@ -61,33 +65,25 @@ public class CrudOperation {
             consolePrinter.print(String.format("\n\n---\nType command  for '%s' on table: %s", projectOperation.toString().toUpperCase(), projectTables.toString().toUpperCase()));
             StringBuilder sampleString = new StringBuilder();
             List<String> fieldsInTable = null;
+            fieldsInTable = this.databaseController.getFieldsInTable(projectTables.toString());
+
             if (projectOperation.equals(ProjectOperations.INSERT)) {
-                fieldsInTable = this.databaseController.getFieldsInTable(projectTables.toString());
                 sampleString.append(String.format("INSERT INTO %s VALUES (",
                         projectTables.toString()));
 
-                String prefix = "";
-                for (String column : fieldsInTable) {
-                    sampleString.append(prefix);
-                    prefix = ",";
-                    sampleString.append(column);
-                }
+                sampleString.append(appendExistingFields(fieldsInTable));
+
                 sampleString.append(")");
                 sampleString.append("\nTape only values separated by commas:");
-            } else if (projectOperation.equals(ProjectOperations.Delete)) {
+            } else if (projectOperation.equals(ProjectOperations.DELETE)) {
                 sampleString.append(String.format("(DELETE FROM %s WHERE field = some_field", projectTables.toString()));
-                sampleString.append("\nFields:");
-
-                String prefix = "";
-                for (String column : fieldsInTable) {
-                    sampleString.append(prefix);
-                    prefix = ",";
-                    sampleString.append(column);
-                }
-                sampleString.append("\nTape 'field' and 'some_field' separated by commas:");
+                sampleString.append(appendExistingFields(fieldsInTable));
+                sampleString.append(EXAMPLE_DELETE);
 
             } else if (projectOperation.equals(ProjectOperations.UPDATE)) {
-                sampleString.append(String.format("(Example: %s %s SET field = some_field WHERE field_id = some_field_id", projectOperation.toString(), projectTables.toString()));
+                sampleString.append(String.format("(Command will execude like:\n %s %s SET field = some_field WHERE field_id = some_field_id", projectOperation.toString().toUpperCase(), projectTables.toString()));
+                sampleString.append(appendExistingFields(fieldsInTable));
+
             }
             consolePrinter.print(sampleString.toString());
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -104,6 +100,19 @@ public class CrudOperation {
             }
         }
         return operationLine;
+    }
+
+    private String appendExistingFields(List<String> fieldsInTable) {
+        StringBuilder rval = new StringBuilder();
+        rval.append("\nFields:");
+        String prefix = "";
+        for (String column : fieldsInTable) {
+            rval.append(prefix);
+            prefix = ",";
+            rval.append(column);
+        }
+
+        return rval.toString();
     }
 
 }

@@ -3,9 +3,7 @@ package ua.com.tervola.jdbc.consolepart;
 import ua.com.tervola.jdbc.ProjectOperations;
 import ua.com.tervola.jdbc.ProjectTables;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -24,7 +22,8 @@ public class ConsoleValidator {
     private static int INPUT_WRONG_FORMAT = -3;
 
     private static String OUTLINE_INSERT = "INSERT INTO %s VALUES (";
-    private static String OUTLINE_DELETE = "DELETE FROM %s WHERE %s = %s";
+    private static String OUTLINE_DELETE = "DELETE FROM %s WHERE %s";
+    private static String OUTLINE_UPDATE = "UPDATE %s SET %s";
 
     public int getInputNumber(String inputText) throws IOException {
 
@@ -54,11 +53,7 @@ public class ConsoleValidator {
     }
 
     public String parseCommand(ProjectOperations projectOperation, String input, List<String> tableSize, ProjectTables projectTables) {
-        String rval = "";
-
-        if (input.endsWith(",")) {
-            input = input.substring(0, input.length() - 1);
-        }
+        StringBuilder outLine = new StringBuilder();
 
         if (projectOperation.equals(ProjectOperations.INSERT)) {
             String[] split = input.split(",");
@@ -66,48 +61,106 @@ public class ConsoleValidator {
                 return "ERROR: Miss one or move values";
             }
 
-            StringBuilder outLine = new StringBuilder();
             outLine.append(String.format(OUTLINE_INSERT, projectTables.toString()));
             String prefix = "";
             for (String line : split) {
-                boolean isDigit = false;
-                if (line.contains(",")) {
-                    try {
-                        Double.parseDouble(line);
-                        isDigit = true;
-                    } catch (Exception e) {
-                        //NoOP
-                    }
-                } else if (Character.isDigit(line.toCharArray()[0])) {
-                    try {
-                        Integer.parseInt(line);
-                        isDigit = true;
-                    } catch (Exception e) {
-                        //NoOP
-                    }
-                }
-
-                if (!isDigit) {
-                    line = String.format("'%s'", line);
-                }
-
+                line = addQuotesIfNeed(line);
                 outLine.append(prefix);
                 prefix = ",";
                 outLine.append(line);
             }
             outLine.append(")");
-            rval = outLine.toString();
-        } else if (projectOperation.equals(ProjectOperations.Delete)){
+
+        } else if (projectOperation.equals(ProjectOperations.UPDATE)) {
+
+            /**
+             * Inputstring for parsing should be:
+             * dish_di=13,coast=215
+            */
             String[] split = input.split(",");
             if (split.length != 2) {
                 return "ERROR: Miss one or move values";
             }
 
-            StringBuilder outLine = new StringBuilder();
+            String firstCondition = split[0];
+            String field = firstCondition.split("=")[0];
+            String someField = firstCondition.split("=")[1];
+            String secondCondition = split[1];
+            String fieldCondition= secondCondition.split("=")[0];
+            String someFieldCondition = secondCondition.split("=")[1];
+
+            StringBuilder condition = new StringBuilder();
+            condition.append(field).append("=");
+            condition.append(addQuotesIfNeed(someField)).append(" WHERE ");
+            condition.append(fieldCondition).append("=");
+            condition.append(addQuotesIfNeed(someFieldCondition));
+            outLine.append(String.format(OUTLINE_UPDATE, projectTables.toString(), condition.toString()));
+        } else if (projectOperation.equals(ProjectOperations.DELETE)) {
+            String[] split = input.split("\\W");
+            if (split.length != 2) {
+                return "ERROR: Miss one or move values";
+            }
+
             String field = split[0];
             String someField = split[1];
-            outLine.append(String.format(OUTLINE_DELETE, projectTables.toString(),field, someField));
+
+            StringBuilder condition = new StringBuilder();
+            condition.append(field).append(" ");
+            condition.append(getOp(input)).append(" ");
+            someField = addQuotesIfNeed(someField);
+            condition.append(someField);
+            outLine.append(String.format(OUTLINE_DELETE, projectTables.toString(), condition.toString()));
+        }
+        return outLine.toString();
+    }
+
+    private String getOp(String input) {
+        input = input.replace(" ", "");
+        int index = -1000;
+        if (input.contains("<")) {
+            index = input.indexOf("<");
+        } else if (input.contains("=")) {
+            index = input.indexOf("=");
+        } else if (input.contains(">")) {
+            index = input.indexOf("=");
+        }
+
+        if (index == -1000) {
+            throw new RuntimeException("unknown operand");
+        }
+
+        if (Character.isLetterOrDigit(input.charAt(index + 1))) {
+            return String.valueOf(input.charAt(index));
+        } else {
+            return String.valueOf(input.charAt(index) + input.charAt(index + 1));
+        }
+    }
+
+    private String addQuotesIfNeed(String someField) {
+        String rval = someField;
+        boolean isDigit = false;
+        if (rval.contains(",")) {
+            try {
+                Double.parseDouble(rval);
+                isDigit = true;
+            } catch (Exception e) {
+                //NoOP
+            }
+        } else if (Character.isDigit(rval.toCharArray()[0])) {
+            try {
+                Integer.parseInt(rval);
+                isDigit = true;
+            } catch (Exception e) {
+                //NoOP
+            }
+        }
+
+        if (!isDigit) {
+            rval = String.format("'%s'", rval);
         }
         return rval;
     }
+
+//    private String defineCondition(String input) {
+//    }
 }

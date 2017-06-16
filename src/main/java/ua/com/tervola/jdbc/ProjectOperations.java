@@ -6,7 +6,7 @@ package ua.com.tervola.jdbc;
 public enum ProjectOperations {
         UPDATE("update"),
         INSERT("insert"),
-        Delete("delete");
+        DELETE("delete");
 
         final private String operation;
 
