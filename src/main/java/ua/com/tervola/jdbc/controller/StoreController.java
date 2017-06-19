@@ -1,10 +1,7 @@
 package ua.com.tervola.jdbc.controller;
 
-import org.springframework.transaction.annotation.Transactional;
-import ua.com.tervola.jdbc.model.DatabaseDao;
 import ua.com.tervola.jdbc.model.Ingridient;
 import ua.com.tervola.jdbc.model.StoreDao;
-import ua.com.tervola.jdbc.model.jdbc.JdbcStoreDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
  */
 public class StoreController {
 
-    private StoreDao storeDao;
+    private final StoreDao storeDao;
 
     public StoreController(StoreDao jdbcStoreDao) {
         this.storeDao = jdbcStoreDao;

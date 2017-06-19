@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by user on 1/28/2017.
  */
-@Component
+
 public class DishController {
 
     private DishDao dishDao;

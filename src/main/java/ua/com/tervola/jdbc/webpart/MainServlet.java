@@ -55,14 +55,27 @@ public class MainServlet extends HttpServlet {
         } else if (action.endsWith("storage")) {
 
             List<String> result = controller.getStoreController().findAllIngridientsAsString();
-            request.setAttribute("storage", result);
-            pageRedirector("/storage.jsp", request, response);
+            redirectWithResult(result, getTableName(action), request, response);
 
         } else if (action.endsWith("menu")) {
 
             List<String> result = controller.getMenuController().findAllMenuAsString();
-            request.setAttribute("menu", result);
-            pageRedirector("/menu.jsp", request, response);
+            redirectWithResult(result, getTableName(action), request, response);
+
+        } else if (action.endsWith("prepared_dishes")) {
+
+            List<String> result = controller.getPreparedDishesController().findAllPreparedDishesAsString();
+            redirectWithResult(result, getTableName(action), request, response);
+
+        } else if (action.endsWith("dish")) {
+
+            List<String> result = controller.getPreparedDishesController().findAllPreparedDishesAsString();
+            redirectWithResult(result, getTableName(action), request, response);
+
+        } else if (action.endsWith("employee")) {
+
+            List<String> result = controller.getEmployeeController().getAllEmployeesAsString();
+            redirectWithResult(result, getTableName(action), request, response);
 
         } else if (action.equals("/")) {
 
@@ -73,6 +86,21 @@ public class MainServlet extends HttpServlet {
             pageRedirector("/error.jsp", request, response);
         }
 
+    }
+
+    private void redirectWithResult(final List<String> result, final String tableName, final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        if (result.size() == 0) {
+            request.setAttribute("error", String.format("the table %s has no any records: ", tableName));
+            pageRedirector("/error.jsp", request, response);
+        } else {
+            request.setAttribute(tableName, result);
+            request.setAttribute("tableTitle", tableName);
+            pageRedirector(String.format("/%s.jsp", tableName), request, response);
+        }
+    }
+
+    private String getTableName(String action) {
+        return action.replace("/", "");
     }
 
     @Override
